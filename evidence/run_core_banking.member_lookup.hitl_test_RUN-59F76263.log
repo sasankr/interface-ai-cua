@@ -1,0 +1,17 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.member_lookup.hitl_test
+Run ID:     RUN-59F76263
+Status:     SUCCESS
+Duration:   2833.76 ms
+Inputs:     {"member_id": "MEM-1082"}
+Outputs:    {"member_name": "Eleanor Vance", "cif_status": "STATUS: ACTIVE CIF \u2022 OPERATOR: OP-4912", "savings_balance": "$18,940.25", "checking_balance": "$4,250.80"}
+
+--- STEP TIMELINE ---
+[1] step_0_simulated_roadblock - CLICK: RECOVERED_BY_OPERATOR (309.6ms)
+    ERROR: Failed to resolve target element after 1 strategy attempts. Strategy: {'primary_role': None, 'accessible_name': None, 'text_content': None, 'placeholder': None, 'label_text': None, 'css_selector': '#nonexistent-captcha-challenge', 'xpath': None, 'visual_anchor': None, 'frame_selector': None, 'confidence_score': 1.0}
+[2] step_1_input_member_id - FILL (PLACEHOLDER): SUCCESS (392.6ms)
+[3] step_2_submit_search - CLICK (ARIA_ROLE_NAME): SUCCESS (655.1ms)
+
+--- HUMAN INTERVENTIONS ---
+- ID: INT-04BF5FF5 | Status: RESUMED | Operator: OPERATOR-JANE-DOE
+  Notes: Verified terminal session security clearance; dismissed roadblock manually.

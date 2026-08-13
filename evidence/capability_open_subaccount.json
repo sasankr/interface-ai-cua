@@ -4,7 +4,7 @@
   "name": "Open Core Banking Sub-Account",
   "description": "Creates a new sub-account ledger under an active CIF profile.",
   "metadata": {
-    "created_at": "2026-08-13T20:34:10Z",
+    "created_at": "2026-08-13T20:40:41Z",
     "discovered_by": "CUA Discovery Agent v1.0",
     "source_goal": "open a new sub-account for this member and reach the confirmation screen",
     "tenant_scope": "GLOBAL_APEXCORE",

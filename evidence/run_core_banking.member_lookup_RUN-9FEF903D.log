@@ -1,0 +1,11 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.member_lookup
+Run ID:     RUN-9FEF903D
+Status:     SUCCESS
+Duration:   2552.25 ms
+Inputs:     {"member_id": "MEM-1082"}
+Outputs:    {"member_name": "Eleanor Vance", "cif_status": "STATUS: ACTIVE CIF \u2022 OPERATOR: OP-4912", "savings_balance": "$18,940.25", "checking_balance": "$4,250.80"}
+
+--- STEP TIMELINE ---
+[1] step_1_input_member_id - FILL (PLACEHOLDER): SUCCESS (379.5ms)
+[2] step_2_submit_search - CLICK (ARIA_ROLE_NAME): SUCCESS (680.9ms)

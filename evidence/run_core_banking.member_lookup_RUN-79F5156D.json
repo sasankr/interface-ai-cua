@@ -1,0 +1,58 @@
+{
+  "capability_id": "core_banking.member_lookup",
+  "run_id": "RUN-79F5156D",
+  "status": "BUSINESS_OUTCOME",
+  "inputs_applied": {
+    "member_id": "MEM-9999"
+  },
+  "outputs_extracted": {},
+  "business_outcome_code": "MEMBER_NOT_FOUND",
+  "business_outcome_message": "No active member matching identifier 'MEM-9999' was located in CIF master partition.",
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 2392.230272293091,
+  "step_records": [
+    {
+      "step_id": "step_1_input_member_id",
+      "description": "Enter target CIF Member Identifier into search textbox",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "MEM-9999",
+      "locator_details": {
+        "strategy_used": "PLACEHOLDER",
+        "selector_string": "placeholder='e.g. MEM-1082'",
+        "resolved_in_ms": 26.439905166625977,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 380.10334968566895,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-79F5156D_step_1_input_member_id.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_submit_search",
+      "description": "Click 'Search Member Records' button to submit inquiry to host",
+      "action_type": "CLICK",
+      "status": "BUSINESS_OUTCOME_TRIGGERED",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Search Member Records']",
+        "resolved_in_ms": 20.866870880126953,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 626.079797744751,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-79F5156D_outcome_MEMBER_NOT_FOUND.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-79F5156D_step_1_input_member_id.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-79F5156D_outcome_MEMBER_NOT_FOUND.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": []
+}

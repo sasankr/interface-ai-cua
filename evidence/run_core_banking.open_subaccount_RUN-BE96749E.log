@@ -1,0 +1,12 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.open_subaccount
+Run ID:     RUN-BE96749E
+Status:     SUCCESS
+Duration:   2842.21 ms
+Inputs:     {"member_id": "MEM-1082", "account_type": "High Yield Savings (APY 4.25%)", "initial_deposit": "$300.00"}
+Outputs:    {"assigned_account_number": "ACT-1082-04", "confirmation_code": "CONF-SUB-1082-98124"}
+
+--- STEP TIMELINE ---
+[1] step_1_select_product - SELECT_OPTION (CSS_SELECTOR): SUCCESS (441.9ms)
+[2] step_2_set_initial_deposit - FILL (CSS_SELECTOR): SUCCESS (321.3ms)
+[3] step_3_confirm_and_submit - CLICK (ARIA_ROLE_NAME): SUCCESS (689.6ms)

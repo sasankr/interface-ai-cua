@@ -4,7 +4,7 @@
   "name": "Core Banking Member Lookup & Balance Inquiry",
   "description": "Searches a CIF member record and extracts demographic summary and deposit balances.",
   "metadata": {
-    "created_at": "2026-08-13T20:34:08Z",
+    "created_at": "2026-08-13T20:40:39Z",
     "discovered_by": "CUA Discovery Agent v1.0",
     "source_goal": "look up member 1082 and read their current savings balance",
     "tenant_scope": "GLOBAL_APEXCORE",
