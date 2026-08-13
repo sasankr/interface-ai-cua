@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0.0",
+  "capability_id": "core_banking.member_lookup",
+  "name": "Core Banking Member Lookup & Balance Inquiry",
+  "description": "Discovered flow for goal: 'look up member 1082 and read their current savings balance'",
+  "metadata": {
+    "created_at": "2026-08-13T21:48:16Z",
+    "discovered_by": "CUA Discovery Agent v1.0",
+    "source_goal": "look up member 1082 and read their current savings balance",
+    "tenant_scope": "GLOBAL_APEXCORE",
+    "vendor_product": "ApexCore Banking",
+    "version": "1.0.0",
+    "tags": [
+      "banking",
+      "cif",
+      "deterministic-replay",
+      "auto-generated"
+    ]
+  },
+  "entry_point": "http://127.0.0.1:8000/portal/member_search",
+  "inputs": [
+    {
+      "name": "member_id",
+      "type": "string",
+      "description": "Input parameter bound to member_id",
+      "required": true,
+      "default": "MEM-1082",
+      "allowed_values": null,
+      "redaction_class": null,
+      "example": "MEM-1082"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "savings_balance",
+      "type": "string",
+      "description": "Extracted field: savings_balance",
+      "target_locator": {
+        "primary_role": "text",
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "tr:contains('High Yield Savings') td:nth-child(3)",
+        "xpath": "//tr[td[contains(text(), 'High Yield Savings')]]/td[3]",
+        "visual_anchor": "High Yield Savings",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": null
+    }
+  ],
+  "safety_policy": {
+    "allowed_domains": [
+      "127.0.0.1",
+      "localhost"
+    ],
+    "allowed_actions": [
+      "NAVIGATE",
+      "CLICK",
+      "FILL",
+      "SELECT_OPTION",
+      "CHECK",
+      "UNCHECK",
+      "PRESS_KEY",
+      "WAIT_FOR_ELEMENT",
+      "EXTRACT_TEXT",
+      "EXTRACT_ATTRIBUTE",
+      "ASSERT_TEXT",
+      "ASSERT_VISIBLE",
+      "DISMISS_DIALOG"
+    ],
+    "prohibit_external_navigation": true,
+    "max_total_duration_sec": 30,
+    "requires_human_confirmation_for_mutation": false
+  },
+  "steps": [
+    {
+      "step_id": "step_1_fill",
+      "description": "To look up member 1082, I need to fill in the member ID in the search field and then click the searc",
+      "action_type": "FILL",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": "",
+        "text_content": null,
+        "placeholder": "e.g. MEM-1082",
+        "label_text": null,
+        "css_selector": "#txtMemberId",
+        "xpath": "//input[@id='txtMemberId']",
+        "visual_anchor": "Member Identifier (CIF#):",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": "MEM-1082",
+      "param_binding": "member_id",
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_WRITE",
+      "optional": false,
+      "wait_after_ms": 300
+    },
+    {
+      "step_id": "step_2_click",
+      "description": "The member ID 'MEM-1082' has been filled in the search field. The next step is to initiate the searc",
+      "action_type": "CLICK",
+      "target": {
+        "primary_role": "button",
+        "accessible_name": "Search Member Records",
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#btnSearchMember",
+        "xpath": "//button[@id='btnSearchMember']",
+        "visual_anchor": "Search Member Records",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": null,
+      "param_binding": null,
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_READ",
+      "optional": false,
+      "wait_after_ms": 300
+    }
+  ],
+  "checkpoints": [
+    {
+      "checkpoint_id": "chk_step_2",
+      "description": "The member profile for MEM-1082 should be displayed, allowing access to their savings balance.",
+      "target": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": ".member-profile",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_3",
+      "description": "The savings balance for the High Yield Savings account should be visible.",
+      "target": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "tr:contains('High Yield Savings') td:nth-child(3)",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    }
+  ],
+  "business_outcomes": [
+    {
+      "outcome_code": "MEMBER_NOT_FOUND",
+      "description": "Core banking host returned Record Not Found",
+      "trigger_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": "[ERROR CODE: MEMBER_NOT_FOUND]",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#error-code-badge",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "trigger_condition": "VISIBLE",
+      "expected_text_pattern": "MEMBER_NOT_FOUND",
+      "extract_message": true
+    }
+  ],
+  "recoverable_conditions": []
+}

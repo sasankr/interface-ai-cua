@@ -86,19 +86,20 @@ class LLMClient:
         current_url: str,
         page_title: str,
         interactive_elements: List[Dict[str, Any]],
-        step_history: List[Dict[str, Any]]
+        step_history: List[Dict[str, Any]],
+        visible_page_text: str = ""
     ) -> Dict[str, Any]:
         """Queries the active LLM provider (or recorded model trace) for the next action."""
         if self.provider == "openai":
-            return self._call_openai(goal, current_url, page_title, interactive_elements, step_history)
+            return self._call_openai(goal, current_url, page_title, interactive_elements, step_history, visible_page_text)
         elif self.provider == "anthropic":
-            return self._call_anthropic(goal, current_url, page_title, interactive_elements, step_history)
+            return self._call_anthropic(goal, current_url, page_title, interactive_elements, step_history, visible_page_text)
         elif self.provider == "gemini":
-            return self._call_gemini(goal, current_url, page_title, interactive_elements, step_history)
+            return self._call_gemini(goal, current_url, page_title, interactive_elements, step_history, visible_page_text)
         else:
             return self._call_recorded_trace(goal, current_url, page_title, interactive_elements, step_history)
 
-    def _call_openai(self, goal: str, url: str, title: str, elements: list, history: list) -> Dict[str, Any]:
+    def _call_openai(self, goal: str, url: str, title: str, elements: list, history: list, visible_text: str = "") -> Dict[str, Any]:
         from openai import OpenAI
         client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
         model_name = self.model or "gpt-4o"
@@ -108,6 +109,7 @@ class LLMClient:
             "current_url": url,
             "page_title": title,
             "interactive_elements": elements,
+            "visible_page_text": visible_text,
             "step_history": history
         }, indent=2)
 

@@ -134,11 +134,14 @@ class DiscoveryAgent:
                     ss_path = ""
 
                 # Build the full observe payload (same object that goes to the model)
+                # Include visible page text so the model can see actual data values
+                visible_text = self._extract_visible_text(page)
                 observe_payload = {
                     "goal": goal,
                     "current_url": current_url,
                     "page_title": page_title,
                     "interactive_elements": elements,
+                    "visible_page_text": visible_text,
                     "step_history": step_history
                 }
 
@@ -149,7 +152,8 @@ class DiscoveryAgent:
                     current_url=current_url,
                     page_title=page_title,
                     interactive_elements=elements,
-                    step_history=step_history
+                    step_history=step_history,
+                    visible_page_text=visible_text
                 )
 
                 thought = decision.get("thought", "")
@@ -381,6 +385,25 @@ class DiscoveryAgent:
         except Exception:
             pass
         return elements
+
+    def _extract_visible_text(self, page: Page) -> str:
+        """Extracts visible page text (max 3000 chars) so the model can see actual data."""
+        try:
+            text = page.evaluate("""
+                () => {
+                    // Remove script and style content
+                    const clone = document.body.cloneNode(true);
+                    clone.querySelectorAll('script,style').forEach(el => el.remove());
+                    return clone.innerText || clone.textContent || '';
+                }
+            """)
+            # Condense whitespace and limit length
+            import re
+            text = re.sub(r'[ \t]+', ' ', text)
+            text = re.sub(r'\n{3,}', '\n\n', text)
+            return text.strip()[:3000]
+        except Exception:
+            return ""
 
     def _execute_model_action(self, page: Page, action: str, target: Dict[str, Any], value: Optional[str]) -> str:
         """Applies model's decision to live Playwright browser context."""
