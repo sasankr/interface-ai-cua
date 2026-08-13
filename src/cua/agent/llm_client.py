@@ -3,7 +3,7 @@ Unified LLM Client for Computer-Use Discovery
 Supports:
 1. OpenAI (gpt-4o, gpt-4o-mini)
 2. Anthropic (claude-3-5-sonnet, claude-3-haiku)
-3. Google Gemini (gemini-1.5-pro, gemini-2.0-flash)
+3. Google Gemini (gemini-1.5-pro, gemini-2.0-flash-exp)  – requires google-generativeai>=0.5
 4. Offline Recorded Trace Provider (for zero-API-key reviewer reproducibility)
 """
 
@@ -73,6 +73,8 @@ class LLMClient:
             return self._call_openai(goal, current_url, page_title, interactive_elements, step_history)
         elif self.provider == "anthropic":
             return self._call_anthropic(goal, current_url, page_title, interactive_elements, step_history)
+        elif self.provider == "gemini":
+            return self._call_gemini(goal, current_url, page_title, interactive_elements, step_history)
         else:
             return self._call_recorded_trace(goal, current_url, page_title, interactive_elements, step_history)
 
@@ -122,6 +124,44 @@ class LLMClient:
         )
         content_text = response.content[0].text
         # Parse JSON from response
+        try:
+            return json.loads(content_text)
+        except Exception:
+            start = content_text.find("{")
+            end = content_text.rfind("}") + 1
+            return json.loads(content_text[start:end])
+
+    def _call_gemini(self, goal: str, url: str, title: str, elements: list, history: list) -> Dict[str, Any]:
+        try:
+            import google.generativeai as genai
+        except ImportError:
+            raise ImportError(
+                "google-generativeai is required for Gemini provider. "
+                "Install it with: pip install google-generativeai"
+            )
+
+        api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        genai.configure(api_key=api_key)
+        model_name = self.model or "gemini-2.0-flash-exp"
+        model = genai.GenerativeModel(
+            model_name=model_name,
+            system_instruction=DISCOVERY_SYSTEM_PROMPT,
+            generation_config=genai.GenerationConfig(
+                response_mime_type="application/json",
+                temperature=0.1
+            )
+        )
+
+        user_content = json.dumps({
+            "goal": goal,
+            "current_url": url,
+            "page_title": title,
+            "interactive_elements": elements,
+            "step_history": history
+        }, indent=2)
+
+        response = model.generate_content(user_content)
+        content_text = response.text
         try:
             return json.loads(content_text)
         except Exception:
