@@ -1,0 +1,58 @@
+{
+  "capability_id": "core_banking.member_lookup",
+  "run_id": "RUN-3C4ECE1A",
+  "status": "BUSINESS_OUTCOME",
+  "inputs_applied": {
+    "member_id": "MEM-1082"
+  },
+  "outputs_extracted": {},
+  "business_outcome_code": "MEMBER_NOT_FOUND",
+  "business_outcome_message": "No active member matching identifier '1082' was located in CIF master partition.",
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 3548.6397743225098,
+  "step_records": [
+    {
+      "step_id": "step_1_fill",
+      "description": "To look up member 1082, I need to enter the member ID in the search field and then initiate the sear",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "1082",
+      "locator_details": {
+        "strategy_used": "PLACEHOLDER",
+        "selector_string": "placeholder='e.g. MEM-1082'",
+        "resolved_in_ms": 49.5295524597168,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 765.9986019134521,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-3C4ECE1A_step_1_fill.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_click",
+      "description": "The member ID '1082' has been filled in the search field. The next logical step is to initiate the s",
+      "action_type": "CLICK",
+      "status": "BUSINESS_OUTCOME_TRIGGERED",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Search Member Records']",
+        "resolved_in_ms": 16.001462936401367,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 664.6056175231934,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-3C4ECE1A_outcome_MEMBER_NOT_FOUND.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-3C4ECE1A_step_1_fill.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-3C4ECE1A_outcome_MEMBER_NOT_FOUND.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": []
+}

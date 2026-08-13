@@ -1,0 +1,12 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.member_lookup
+Run ID:     RUN-0C72EB5C
+Status:     BUSINESS_OUTCOME
+Duration:   2385.26 ms
+Inputs:     {"member_id": "MEM-9999"}
+Outputs:    {}
+Outcome:    [MEMBER_NOT_FOUND] No active member matching identifier '1082' was located in CIF master partition.
+
+--- STEP TIMELINE ---
+[1] step_1_fill - FILL (PLACEHOLDER): SUCCESS (452.9ms)
+[2] step_2_click - CLICK (ARIA_ROLE_NAME): BUSINESS_OUTCOME_TRIGGERED (510.9ms)

@@ -4,7 +4,7 @@
   "name": "Core Banking Member Lookup & Balance Inquiry",
   "description": "Discovered flow for goal: 'look up member 1082 and read their current savings balance'",
   "metadata": {
-    "created_at": "2026-08-13T21:21:58Z",
+    "created_at": "2026-08-13T21:34:32Z",
     "discovered_by": "CUA Discovery Agent v1.0",
     "source_goal": "look up member 1082 and read their current savings balance",
     "tenant_scope": "GLOBAL_APEXCORE",
@@ -22,56 +22,98 @@
     {
       "name": "member_id",
       "type": "string",
-      "description": "Input parameter bound to member_id",
+      "description": "Member ID",
       "required": true,
       "default": "MEM-1082",
       "allowed_values": null,
       "redaction_class": null,
-      "example": "MEM-1082"
+      "example": null
     }
   ],
   "outputs": [
     {
-      "name": "member_name",
+      "name": "current_savings_balance",
       "type": "string",
-      "description": "Extracted field: member_name",
+      "description": "Extracted field: current_savings_balance",
       "target_locator": {
-        "primary_role": "generic",
-        "accessible_name": "Full Name",
+        "primary_role": "textbox",
+        "accessible_name": "Savings Balance",
         "text_content": null,
-        "placeholder": null,
+        "placeholder": "",
         "label_text": null,
-        "css_selector": "#summary-member-name",
-        "xpath": "//strong[@id='summary-member-name']",
-        "visual_anchor": "Full Name:",
+        "css_selector": ".savings-balance",
+        "xpath": "//div[contains(@class, 'savings-balance')]",
+        "visual_anchor": "Savings Balance",
         "frame_selector": null,
         "confidence_score": 1.0
       },
       "extraction_attribute": null,
       "regex_capture": null,
       "required": true,
-      "example": "Eleanor Vance"
+      "example": ""
     },
     {
       "name": "savings_balance",
       "type": "string",
       "description": "Extracted field: savings_balance",
       "target_locator": {
-        "primary_role": "cell",
-        "accessible_name": "High Yield Savings Balance",
+        "primary_role": "textbox",
+        "accessible_name": "",
         "text_content": null,
-        "placeholder": null,
+        "placeholder": "",
         "label_text": null,
-        "css_selector": "tr[data-account-type='High Yield Savings'] .account-balance",
-        "xpath": "//tr[@data-account-type='High Yield Savings']//td[contains(@class,'account-balance')]",
-        "visual_anchor": "High Yield Savings",
+        "css_selector": ".account-details .savings-balance",
+        "xpath": "//table[@class='account-details']//td[contains(text(), 'Savings Balance')]/following-sibling::td",
+        "visual_anchor": "Savings Balance",
         "frame_selector": null,
         "confidence_score": 1.0
       },
       "extraction_attribute": null,
       "regex_capture": null,
       "required": true,
-      "example": "$18,940.25"
+      "example": ""
+    },
+    {
+      "name": "savings_balance",
+      "type": "string",
+      "description": "Extracted field: savings_balance",
+      "target_locator": {
+        "primary_role": "textbox",
+        "accessible_name": "",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "",
+        "xpath": "//td[contains(text(), 'Savings Balance')]/following-sibling::td",
+        "visual_anchor": "Savings Balance",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": ""
+    },
+    {
+      "name": "savings_balance",
+      "type": "string",
+      "description": "Extracted field: savings_balance",
+      "target_locator": {
+        "primary_role": "textbox",
+        "accessible_name": "",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "",
+        "xpath": "//text()[contains(., 'Savings Balance')]/following::text()[1]",
+        "visual_anchor": "Savings Balance",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": ""
     }
   ],
   "safety_policy": {
@@ -101,22 +143,22 @@
   "steps": [
     {
       "step_id": "step_1_fill",
-      "description": "I observe the Member Search inquiry page. To look up member 1082, I must enter the identifier 'MEM-1",
+      "description": "To look up member 1082, I need to enter the member ID in the search field and then initiate the sear",
       "action_type": "FILL",
       "target": {
         "primary_role": "textbox",
-        "accessible_name": "Member Identifier (CIF#):",
+        "accessible_name": "",
         "text_content": null,
         "placeholder": "e.g. MEM-1082",
         "label_text": null,
         "css_selector": "#txtMemberId",
-        "xpath": "//input[@id='txtMemberId']",
-        "visual_anchor": "Member Identifier (CIF#):",
+        "xpath": "//input[@placeholder='e.g. MEM-1082']",
+        "visual_anchor": "",
         "frame_selector": null,
         "confidence_score": 1.0
       },
-      "value": "MEM-1082",
-      "param_binding": "member_id",
+      "value": "1082",
+      "param_binding": "",
       "timeout_ms": 5000,
       "risk_level": "SAFE_WRITE",
       "optional": false,
@@ -124,21 +166,67 @@
     },
     {
       "step_id": "step_2_click",
-      "description": "The member ID field is populated. I now click 'Search Member Records' button to submit the query to ",
+      "description": "The member ID '1082' has been filled in the search field. The next logical step is to initiate the s",
       "action_type": "CLICK",
       "target": {
         "primary_role": "button",
         "accessible_name": "Search Member Records",
         "text_content": null,
-        "placeholder": null,
+        "placeholder": "",
         "label_text": null,
         "css_selector": "#btnSearchMember",
-        "xpath": "//button[@id='btnSearchMember']",
+        "xpath": "//button[text()='Search Member Records']",
         "visual_anchor": "Search Member Records",
         "frame_selector": null,
         "confidence_score": 1.0
       },
-      "value": null,
+      "value": "",
+      "param_binding": "",
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_READ",
+      "optional": false,
+      "wait_after_ms": 300
+    },
+    {
+      "step_id": "step_3_click",
+      "description": "The current page is titled 'Host Exception Notice', which suggests that the previous search attempt ",
+      "action_type": "CLICK",
+      "target": {
+        "primary_role": "link",
+        "accessible_name": "Return to Member Lookup",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "#lnkSearchRetry",
+        "xpath": "//a[text()='Return to Member Lookup']",
+        "visual_anchor": "Return to Member Lookup",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": "",
+      "param_binding": "",
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_READ",
+      "optional": false,
+      "wait_after_ms": 300
+    },
+    {
+      "step_id": "step_4_click",
+      "description": "We have returned to the Member Search page after encountering an exception. The member ID '1082' is ",
+      "action_type": "CLICK",
+      "target": {
+        "primary_role": "button",
+        "accessible_name": "Search Member Records",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "#btnSearchMember",
+        "xpath": "//button[text()='Search Member Records']",
+        "visual_anchor": "Search Member Records",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": "",
       "param_binding": null,
       "timeout_ms": 5000,
       "risk_level": "SAFE_READ",
@@ -149,20 +237,134 @@
   "checkpoints": [
     {
       "checkpoint_id": "chk_step_2",
-      "description": "Member demographic card and deposit accounts table rendered",
+      "description": "Verify that the member's details are displayed, including their savings balance.",
       "target": {
-        "primary_role": "table",
-        "accessible_name": null,
+        "primary_role": "button",
+        "accessible_name": "Search Member Records",
         "text_content": null,
-        "placeholder": null,
+        "placeholder": "",
         "label_text": null,
-        "css_selector": "#tblMemberAccounts",
-        "xpath": "//table[@id='tblMemberAccounts']",
-        "visual_anchor": null,
+        "css_selector": "#btnSearchMember",
+        "xpath": "//button[text()='Search Member Records']",
+        "visual_anchor": "Search Member Records",
         "frame_selector": null,
         "confidence_score": 1.0
       },
       "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_3",
+      "description": "Verify that the page navigates back to the member search interface.",
+      "target": {
+        "primary_role": "link",
+        "accessible_name": "Return to Member Lookup",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "#lnkSearchRetry",
+        "xpath": "//a[text()='Return to Member Lookup']",
+        "visual_anchor": "Return to Member Lookup",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_4",
+      "description": "Verify that the member's details page loads successfully, displaying the savings balance.",
+      "target": {
+        "primary_role": "button",
+        "accessible_name": "Search Member Records",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "#btnSearchMember",
+        "xpath": "//button[text()='Search Member Records']",
+        "visual_anchor": "Search Member Records",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_5",
+      "description": "Verify that the savings balance is displayed and extracted.",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": "Savings Balance",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": ".savings-balance",
+        "xpath": "//div[contains(@class, 'savings-balance')]",
+        "visual_anchor": "Savings Balance",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "NOT_EMPTY",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_6",
+      "description": "Verify that the savings balance is extracted from the member's account details.",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": "",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": ".account-details .savings-balance",
+        "xpath": "//table[@class='account-details']//td[contains(text(), 'Savings Balance')]/following-sibling::td",
+        "visual_anchor": "Savings Balance",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "NOT_EMPTY",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_7",
+      "description": "Verify that the savings balance is extracted correctly from the member details page.",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": "",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "",
+        "xpath": "//td[contains(text(), 'Savings Balance')]/following-sibling::td",
+        "visual_anchor": "Savings Balance",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "NOT_EMPTY",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_step_8",
+      "description": "Verify that the savings balance is extracted correctly.",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": "",
+        "text_content": null,
+        "placeholder": "",
+        "label_text": null,
+        "css_selector": "",
+        "xpath": "//text()[contains(., 'Savings Balance')]/following::text()[1]",
+        "visual_anchor": "Savings Balance",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "NOT_EMPTY",
       "expected_value": null,
       "critical": true
     }

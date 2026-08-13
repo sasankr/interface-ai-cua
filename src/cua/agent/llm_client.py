@@ -26,23 +26,31 @@ You must respond with a JSON object specifying your reasoning and your chosen ac
   "thought": "<Reasoning about current state and what control to target>",
   "action": "CLICK" | "FILL" | "SELECT_OPTION" | "EXTRACT" | "FINISH",
   "target": {
-    "primary_role": "<button|textbox|combobox|link>",
-    "accessible_name": "<text or label>",
-    "placeholder": "<placeholder if any>",
-    "css_selector": "<css selector fallback>",
-    "xpath": "<xpath fallback>",
-    "visual_anchor": "<neighboring text label>"
+    "primary_role": "<button|textbox|combobox|checkbox|link>",
+    "accessible_name": "<visible label or button text>",
+    "placeholder": "<placeholder text if any>",
+    "css_selector": "<CSS selector fallback, e.g. #txtMemberId>",
+    "xpath": "<XPath fallback>",
+    "visual_anchor": "<neighboring label text>"
   },
-  "value": "<text to fill, option to select, or parameter binding like '{{member_id}}'>",
-  "param_binding": "<input param name if parameterized>",
-  "output_name": "<name of extracted data if EXTRACT action>",
+  "value": "<For FILL/SELECT_OPTION: the literal value to enter, e.g. MEM-1082 or $250.00>",
+  "param_binding": "<IMPORTANT: if this value is a user-supplied runtime parameter (like a member ID, account ID, or amount), set this to the parameter name, e.g. 'member_id', 'initial_deposit'. Leave null for hardcoded/static values.>",
+  "output_name": "<For EXTRACT action: the name of the extracted output field, e.g. 'savings_balance', 'member_name', 'confirmation_code'>",
   "checkpoint": {
-    "description": "<what should be verified after this step>",
-    "assertion_type": "VISIBLE" | "TEXT_CONTAINS" | "NOT_EMPTY"
+    "description": "<what should be visible/true after this step succeeds>",
+    "assertion_type": "VISIBLE",
+    "target": {
+      "css_selector": "<selector of element to verify>"
+    }
   }
 }
 
-When the goal is fully accomplished, return action="FINISH".
+CRITICAL RULES:
+1. When you FILL a search/lookup field with an identifier (member ID, CIF number, account number), ALWAYS set param_binding to the parameter name (e.g. "member_id"). This makes the capability reusable.
+2. When you EXTRACT data from the page (balance, name, confirmation number), ALWAYS set output_name to a snake_case field name.
+3. For CLICK actions on submit/search buttons, set value to null.
+4. When you have successfully achieved the goal and extracted all needed outputs, return action="FINISH".
+5. Do NOT return FINISH until you have verified the goal is achieved (e.g., member profile is visible, confirmation screen is reached).
 """
 
 

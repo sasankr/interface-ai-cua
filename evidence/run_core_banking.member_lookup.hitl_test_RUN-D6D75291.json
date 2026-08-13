@@ -1,0 +1,84 @@
+{
+  "capability_id": "core_banking.member_lookup.hitl_test",
+  "run_id": "RUN-D6D75291",
+  "status": "BUSINESS_OUTCOME",
+  "inputs_applied": {
+    "member_id": "MEM-1082"
+  },
+  "outputs_extracted": {},
+  "business_outcome_code": "MEMBER_NOT_FOUND",
+  "business_outcome_message": "No active member matching identifier '1082' was located in CIF master partition.",
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 2354.2184829711914,
+  "step_records": [
+    {
+      "step_id": "step_0_simulated_roadblock",
+      "description": "Verify security captcha or operator badge check",
+      "action_type": "CLICK",
+      "status": "RECOVERED_BY_OPERATOR",
+      "resolved_value": null,
+      "locator_details": null,
+      "duration_ms": 245.36466598510742,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_step_0_simulated_roadblock.png",
+      "error_message": "Failed to resolve target element after 1 strategy attempts. Strategy: {'primary_role': None, 'accessible_name': None, 'text_content': None, 'placeholder': None, 'label_text': None, 'css_selector': '#nonexistent-captcha-challenge', 'xpath': None, 'visual_anchor': None, 'frame_selector': None, 'confidence_score': 1.0}",
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_1_fill",
+      "description": "To look up member 1082, I need to enter the member ID in the search field and then initiate the sear",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "1082",
+      "locator_details": {
+        "strategy_used": "PLACEHOLDER",
+        "selector_string": "placeholder='e.g. MEM-1082'",
+        "resolved_in_ms": 19.006013870239258,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 444.6375370025635,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_step_1_fill.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_click",
+      "description": "The member ID '1082' has been filled in the search field. The next logical step is to initiate the s",
+      "action_type": "CLICK",
+      "status": "BUSINESS_OUTCOME_TRIGGERED",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Search Member Records']",
+        "resolved_in_ms": 21.511077880859375,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 509.63854789733887,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_outcome_MEMBER_NOT_FOUND.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_fail_step_0_simulated_roadblock.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_step_0_simulated_roadblock.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_step_1_fill.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-D6D75291_outcome_MEMBER_NOT_FOUND.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": [
+    {
+      "intervention_id": "INT-542464C1",
+      "operator_id": "OPERATOR-JANE-DOE",
+      "resolution_status": "RESUMED",
+      "operator_notes": "Verified terminal session security clearance; dismissed roadblock manually.",
+      "manual_actions_taken": [
+        "Bypassed captcha",
+        "Validated session clearance"
+      ],
+      "resumed_at": "2026-08-13 17:35:07"
+    }
+  ]
+}

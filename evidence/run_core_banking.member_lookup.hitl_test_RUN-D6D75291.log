@@ -1,0 +1,18 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.member_lookup.hitl_test
+Run ID:     RUN-D6D75291
+Status:     BUSINESS_OUTCOME
+Duration:   2354.22 ms
+Inputs:     {"member_id": "MEM-1082"}
+Outputs:    {}
+Outcome:    [MEMBER_NOT_FOUND] No active member matching identifier '1082' was located in CIF master partition.
+
+--- STEP TIMELINE ---
+[1] step_0_simulated_roadblock - CLICK: RECOVERED_BY_OPERATOR (245.4ms)
+    ERROR: Failed to resolve target element after 1 strategy attempts. Strategy: {'primary_role': None, 'accessible_name': None, 'text_content': None, 'placeholder': None, 'label_text': None, 'css_selector': '#nonexistent-captcha-challenge', 'xpath': None, 'visual_anchor': None, 'frame_selector': None, 'confidence_score': 1.0}
+[2] step_1_fill - FILL (PLACEHOLDER): SUCCESS (444.6ms)
+[3] step_2_click - CLICK (ARIA_ROLE_NAME): BUSINESS_OUTCOME_TRIGGERED (509.6ms)
+
+--- HUMAN INTERVENTIONS ---
+- ID: INT-542464C1 | Status: RESUMED | Operator: OPERATOR-JANE-DOE
+  Notes: Verified terminal session security clearance; dismissed roadblock manually.

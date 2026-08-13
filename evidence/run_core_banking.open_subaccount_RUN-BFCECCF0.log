@@ -1,0 +1,15 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.open_subaccount
+Run ID:     RUN-BFCECCF0
+Status:     HARD_FAILURE
+Duration:   3789.26 ms
+Inputs:     {"member_id": "MEM-1082"}
+Outputs:    {}
+Error:      [CHECKPOINT_ASSERTION_FAILED] Critical checkpoint 'chk_step_3' (Verify that the confirmation screen is displayed indicating successful sub-account creation.) was not satisfied. (Step: chk_step_3)
+
+--- STEP TIMELINE ---
+[1] step_1_click - CLICK (ARIA_ROLE_NAME): SUCCESS (518.0ms)
+[2] step_2_click - CLICK (ARIA_ROLE_NAME): SUCCESS (525.8ms)
+[3] step_3_click - CLICK (ARIA_ROLE_NAME): SUCCESS (527.6ms)
+[4] step_4_click - CLICK (ARIA_ROLE_NAME): SUCCESS (527.6ms)
+[5] step_5_click - CLICK (ARIA_ROLE_NAME): SUCCESS (440.0ms)
