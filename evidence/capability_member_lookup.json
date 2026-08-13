@@ -4,7 +4,7 @@
   "name": "Core Banking Member Lookup & Balance Inquiry",
   "description": "Discovered flow for goal: 'look up member 1082 and read their current savings balance'",
   "metadata": {
-    "created_at": "2026-08-13T21:16:10Z",
+    "created_at": "2026-08-13T21:21:58Z",
     "discovered_by": "CUA Discovery Agent v1.0",
     "source_goal": "look up member 1082 and read their current savings balance",
     "tenant_scope": "GLOBAL_APEXCORE",

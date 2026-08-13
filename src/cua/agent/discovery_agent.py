@@ -49,13 +49,31 @@ class DiscoveryAgent:
     ) -> Tuple[CapabilityArtifact, str]:
         """
         Runs the genuine LLM Observe -> Decide -> Act loop against the live browser.
+        Emits two evidence files:
+          - discovery_run.log: Human-readable per-cycle trace
+          - discovery_trace.json: Machine-readable full payload (observe input + model decision + act result)
         """
+        session_id = f"DISC-{os.urandom(4).hex().upper()}"
+        start_ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
         log_lines = []
         log_lines.append("=== CUA DISCOVERY AGENT: LIVE MODEL-DRIVEN SESSION ===")
+        log_lines.append(f"Session ID: {session_id}")
         log_lines.append(f"Goal: {goal}")
         log_lines.append(f"Target URL: {target_url}")
         log_lines.append(f"LLM Provider: {self.llm.provider.upper()}")
-        log_lines.append(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%SZ')}\n")
+        log_lines.append(f"Timestamp: {start_ts}\n")
+
+        # Full machine-readable trace for evidence
+        trace: Dict[str, Any] = {
+            "session_id": session_id,
+            "started_at": start_ts,
+            "goal": goal,
+            "target_url": target_url,
+            "llm_provider": self.llm.provider,
+            "llm_model": self.llm.model or "(provider default)",
+            "cycles": []
+        }
 
         recorded_steps: List[ActionStep] = []
         recorded_inputs: List[InputParameter] = []
@@ -91,7 +109,17 @@ class DiscoveryAgent:
                 except Exception:
                     ss_path = ""
 
+                # Build the full observe payload (same object that goes to the model)
+                observe_payload = {
+                    "goal": goal,
+                    "current_url": current_url,
+                    "page_title": page_title,
+                    "interactive_elements": elements,
+                    "step_history": step_history
+                }
+
                 # B. DECIDE: Query LLM for next action
+                decide_ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
                 decision = self.llm.decide_next_action(
                     goal=goal,
                     current_url=current_url,
@@ -113,11 +141,30 @@ class DiscoveryAgent:
 
                 if action_str == "FINISH":
                     log_lines.append("[Model Decision] LLM concluded the goal is accomplished. Terminating discovery loop.")
+                    # Record FINISH cycle in trace
+                    trace["cycles"].append({
+                        "cycle": step_idx,
+                        "timestamp": decide_ts,
+                        "observe": observe_payload,
+                        "model_decision": decision,
+                        "act_result": "FINISH — loop terminated by model",
+                        "screenshot": ss_path
+                    })
                     break
 
                 # C. ACT: Execute the chosen action against live Playwright surface
                 act_observation = self._execute_model_action(page, action_str, target_dict, val)
                 log_lines.append(f"[Act Result] {act_observation}")
+
+                # Record full observe→decide→act cycle into the machine-readable trace
+                trace["cycles"].append({
+                    "cycle": step_idx,
+                    "timestamp": decide_ts,
+                    "observe": observe_payload,
+                    "model_decision": decision,
+                    "act_result": act_observation,
+                    "screenshot": ss_path
+                })
 
                 # Build typed locator strategy
                 loc_strategy = LocatorStrategy(
@@ -249,10 +296,20 @@ class DiscoveryAgent:
             business_outcomes=business_outcomes
         )
 
-        # Save discovery log
+        # Finalize trace metadata
+        trace["completed_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        trace["total_cycles"] = len(trace["cycles"])
+        trace["artifact_id"] = artifact.capability_id
+
+        # Save discovery log (human-readable)
         discovery_log_path = os.path.join(self.evidence_dir, "discovery_run.log")
         with open(discovery_log_path, "w", encoding="utf-8") as f:
             f.write("\n".join(log_lines))
+
+        # Save machine-readable full payload trace (evidence of genuine model loop)
+        trace_path = os.path.join(self.evidence_dir, "discovery_trace.json")
+        with open(trace_path, "w", encoding="utf-8") as f:
+            json.dump(trace, f, indent=2, ensure_ascii=False)
 
         # Save artifact JSON
         if not output_artifact_path:

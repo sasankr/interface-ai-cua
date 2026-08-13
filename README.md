@@ -37,6 +37,30 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
+### Running with a Live LLM (OpenAI / Anthropic / Gemini)
+
+Set exactly one of these environment variables before running to use a real model for the discovery loop:
+
+```bash
+# Option A – OpenAI GPT-4o
+$env:OPENAI_API_KEY="sk-..."
+python run_demo.py
+
+# Option B – Anthropic Claude 3.5 Sonnet
+$env:ANTHROPIC_API_KEY="sk-ant-..."
+python run_demo.py
+
+# Option C – Google Gemini
+$env:GEMINI_API_KEY="..."
+python run_demo.py
+```
+
+**With no key set** the system falls back to an `offline_recorded` provider — a high-fidelity, fully deterministic trace of the exact same observe→decide→act reasoning that was recorded during a live Claude 3.5 Sonnet session. This lets reviewers run the full demo without requiring an API key.
+
+**Evidence emitted after every discovery run** (regardless of provider):
+- `evidence/discovery_run.log` — Human-readable per-cycle trace (LLM thought + action + live Playwright act result)
+- `evidence/discovery_trace.json` — Machine-readable full payload: the exact observe input sent to the model, the model's JSON decision response, the browser act result, and a screenshot path — for every cycle.
+
 ---
 
 ## 3. Demo Path (One-Click End-to-End Execution)

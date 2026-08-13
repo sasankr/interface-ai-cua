@@ -1,0 +1,12 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.open_subaccount
+Run ID:     RUN-DCBE430E
+Status:     SUCCESS
+Duration:   2610.12 ms
+Inputs:     {"account_type": "High Yield Savings (APY 4.25%)", "initial_deposit": "$300.00"}
+Outputs:    {"assigned_account_number": "ACT-1082-05", "confirmation_code": "CONF-SUB-1082-98124"}
+
+--- STEP TIMELINE ---
+[1] step_1_select_option - SELECT_OPTION (CSS_SELECTOR): SUCCESS (503.9ms)
+[2] step_2_fill - FILL (CSS_SELECTOR): SUCCESS (391.4ms)
+[3] step_3_click - CLICK (ARIA_ROLE_NAME): SUCCESS (461.8ms)
