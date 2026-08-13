@@ -55,9 +55,21 @@ CRITICAL RULES:
 
 
 class LLMClient:
+    _PROVIDER_DEFAULT_MODELS = {
+        "openai": "gpt-4o",
+        "anthropic": "claude-3-5-sonnet-20241022",
+        "gemini": "gemini-2.0-flash-exp",
+        "offline_recorded": "offline_recorded_trace"
+    }
+
     def __init__(self, provider: Optional[str] = None, model: Optional[str] = None):
         self.provider = provider or self._auto_detect_provider()
         self.model = model
+
+    @property
+    def resolved_model(self) -> str:
+        """Returns the actual model name that will be used (explicit or provider default)."""
+        return self.model or self._PROVIDER_DEFAULT_MODELS.get(self.provider, "unknown")
 
     def _auto_detect_provider(self) -> str:
         if os.environ.get("OPENAI_API_KEY"):

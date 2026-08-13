@@ -20,6 +20,30 @@ from cua.models.capability import (
     ParameterType
 )
 from cua.agent.recorder import ArtifactCompiler
+
+# Keywords indicating an irreversible mutation action (account creation, fund movement, deletion)
+_MUTATION_KEYWORDS = {
+    "create", "submit", "open", "transfer", "delete", "remove", "close account",
+    "approve", "issue", "originate", "fund", "post", "apply", "override"
+}
+
+
+def _classify_action_risk(action_str: str, target_dict: dict) -> "RiskLevel":
+    """Infers risk level from action type and target semantics."""
+    if action_str in ("EXTRACT",):
+        return RiskLevel.SAFE_READ
+    if action_str in ("FILL", "SELECT_OPTION", "CHECK"):
+        return RiskLevel.SAFE_WRITE
+    if action_str == "CLICK":
+        label = " ".join(filter(None, [
+            target_dict.get("accessible_name", ""),
+            target_dict.get("visual_anchor", ""),
+            target_dict.get("text_content", "")
+        ])).lower()
+        if any(kw in label for kw in _MUTATION_KEYWORDS):
+            return RiskLevel.IRREVERSIBLE_MUTATION
+        return RiskLevel.SAFE_READ
+    return RiskLevel.SAFE_READ
 from cua.agent.llm_client import LLMClient
 from cua.replay.locator import LocatorResolver
 from cua.safety.redactor import RedactionEngine
@@ -71,7 +95,7 @@ class DiscoveryAgent:
             "goal": goal,
             "target_url": target_url,
             "llm_provider": self.llm.provider,
-            "llm_model": self.llm.model or "(provider default)",
+            "llm_model": self.llm.resolved_model,
             "cycles": []
         }
 
@@ -141,15 +165,17 @@ class DiscoveryAgent:
 
                 if action_str == "FINISH":
                     log_lines.append("[Model Decision] LLM concluded the goal is accomplished. Terminating discovery loop.")
+                    rel_ss_finish = ("evidence/screenshots/" + os.path.basename(ss_path)) if ss_path else ""
                     # Record FINISH cycle in trace
                     trace["cycles"].append({
                         "cycle": step_idx,
                         "timestamp": decide_ts,
                         "observe": observe_payload,
                         "model_decision": decision,
-                        "act_result": "FINISH — loop terminated by model",
-                        "screenshot": ss_path
+                        "act_result": "FINISH — goal accomplished, loop terminated by model",
+                        "screenshot": rel_ss_finish
                     })
+                    trace["finished_by_model"] = True
                     break
 
                 # C. ACT: Execute the chosen action against live Playwright surface
@@ -157,13 +183,15 @@ class DiscoveryAgent:
                 log_lines.append(f"[Act Result] {act_observation}")
 
                 # Record full observe→decide→act cycle into the machine-readable trace
+                # Use repo-relative screenshot path (not absolute machine path)
+                rel_ss = ("evidence/screenshots/" + os.path.basename(ss_path)) if ss_path else ""
                 trace["cycles"].append({
                     "cycle": step_idx,
                     "timestamp": decide_ts,
                     "observe": observe_payload,
                     "model_decision": decision,
                     "act_result": act_observation,
-                    "screenshot": ss_path
+                    "screenshot": rel_ss
                 })
 
                 # Build typed locator strategy
@@ -186,7 +214,7 @@ class DiscoveryAgent:
                         target=loc_strategy,
                         value=val,
                         param_binding=param_binding,
-                        risk_level=RiskLevel.SAFE_WRITE if action_str != "CLICK" else RiskLevel.SAFE_READ,
+                        risk_level=_classify_action_risk(action_str, target_dict),
                         timeout_ms=5000,
                         wait_after_ms=300
                     )
