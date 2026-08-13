@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ApexCore Banking System - Member Search Inquiry</title>
+    <style>
+        body { font-family: "Lucida Console", "Courier New", monospace, Tahoma, sans-serif; margin: 0; background-color: #d4d0c8; color: #000; font-size: 12px; }
+        .header { background: linear-gradient(to right, #000080, #1084d0); color: white; padding: 4px 8px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #808080; }
+        .toolbar { background: #ece9d8; border-bottom: 1px solid #999; padding: 4px 8px; display: flex; gap: 8px; }
+        .btn-win { background: #ece9d8; border: 2px outset #ffffff; padding: 3px 10px; cursor: pointer; font-size: 11px; font-family: Tahoma, sans-serif; }
+        .btn-win:active { border-style: inset; }
+        .btn-primary { background: #000080; color: white; border: 2px outset #000080; font-weight: bold; }
+        .main-container { display: flex; height: calc(100vh - 55px); }
+        .sidebar { width: 220px; background: #dfdfdf; border-right: 2px solid #808080; padding: 6px; }
+        .sidebar-title { font-weight: bold; background: #000080; color: #fff; padding: 2px 4px; margin-bottom: 4px; font-size: 11px; }
+        .nav-tree { list-style: none; padding-left: 10px; margin: 0; }
+        .nav-tree li { margin: 6px 0; }
+        .nav-tree a { color: #000080; text-decoration: none; font-size: 12px; }
+        .content { flex: 1; padding: 12px; background: #ffffff; overflow-y: auto; }
+        .statusbar { background: #ece9d8; border-top: 1px solid #808080; padding: 2px 6px; font-size: 11px; display: flex; justify-content: space-between; position: fixed; bottom: 0; width: 100%; }
+        fieldset { border: 2px groove #ece9d8; padding: 12px; margin-bottom: 12px; background: #fdfdfd; }
+        legend { font-weight: bold; color: #000080; font-family: Tahoma, sans-serif; font-size: 12px; }
+        .form-table { border-collapse: collapse; }
+        .form-table td { padding: 6px 8px; vertical-align: middle; }
+        .form-input { font-family: "Lucida Console", monospace; font-size: 13px; padding: 3px 6px; border: 2px inset #ffffff; background: #fff; width: 220px; }
+        .interstitial-banner { background: #fff8c4; border: 1px solid #c8a200; padding: 8px 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>[APEX-CORE v4.8.2] &bull; MODULE: CIF-INQUIRY-F2 &bull; HOST: MASTER-01</div>
+        <div style="font-size: 11px;">OPERATOR: OP-4912</div>
+    </div>
+    <div class="toolbar">
+        <button class="btn-win" onclick="location.href='/'">Home (Esc)</button>
+        <button class="btn-win" onclick="location.href='/portal/member_search'">Clear / Reset Form</button>
+        <button class="btn-win" onclick="location.href='/portal/subaccount/open'">Open Sub-Account</button>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-title">OPERATIONS MENU</div>
+            <ul class="nav-tree">
+                <li>&bull; <a href="/portal/member_search"><strong>Member Search</strong></a></li>
+                <li>&bull; <a href="/portal/subaccount/open">Open Sub-Account</a></li>
+                <li>&bull; <a href="/">System Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            {% if show_interstitial %}
+            <div class="interstitial-banner" id="security-notice-interstitial">
+                <div>
+                    <strong>NOTICE [SEC-402]:</strong> Daily audit policy check active. Please confirm acknowledgment before querying member data.
+                </div>
+                <button class="btn-win" id="btn-ack-interstitial" onclick="document.getElementById('security-notice-interstitial').style.display='none';">Acknowledge & Dismiss</button>
+            </div>
+            {% endif %}
+
+            <fieldset>
+                <legend>Member Account Search & Inquiry Criteria</legend>
+                <form action="/portal/member_search" method="POST" id="memberSearchForm">
+                    <table class="form-table">
+                        <tr>
+                            <td style="text-align: right; font-weight: bold; width: 180px;">Member Identifier (CIF#):</td>
+                            <td>
+                                <input type="text" name="member_id" id="txtMemberId" class="form-input" placeholder="e.g. MEM-1082" required autofocus />
+                            </td>
+                            <td>
+                                <span style="color: #666; font-size: 11px;">(Format: MEM-XXXX, e.g. MEM-1082, MEM-4091, MEM-9999)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; font-weight: bold;">Partition Scope:</td>
+                            <td>
+                                <select name="partition" class="form-input" style="width: 236px;">
+                                    <option value="PRIMARY" selected>PRIMARY-CIF-ACTIVE</option>
+                                    <option value="ARCHIVE">ARCHIVE-CIF-INACTIVE</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2" style="padding-top: 10px;">
+                                <button type="submit" id="btnSearchMember" class="btn-win btn-primary" style="padding: 5px 18px; font-size: 12px;">Search Member Records</button>
+                                <button type="reset" class="btn-win" style="padding: 5px 14px; margin-left: 8px;">Clear Criteria</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
+
+            <fieldset style="margin-top: 20px;">
+                <legend>Recent Operational Quick-Picks (Test Data Stand-Ins)</legend>
+                <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                    <tr style="background: #e0e0e0;">
+                        <th style="padding: 4px; text-align: left;">Member ID</th>
+                        <th style="padding: 4px; text-align: left;">Name</th>
+                        <th style="padding: 4px; text-align: left;">Expected Scenario</th>
+                        <th style="padding: 4px; text-align: left;">Action</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;"><code>MEM-1082</code></td>
+                        <td style="padding: 4px;">Eleanor Vance</td>
+                        <td style="padding: 4px; color: green;">Standard Valid Member (Checking + High Yield Savings)</td>
+                        <td style="padding: 4px;"><button class="btn-win" onclick="document.getElementById('txtMemberId').value='MEM-1082'; document.getElementById('memberSearchForm').submit();">Load Record</button></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;"><code>MEM-4091</code></td>
+                        <td style="padding: 4px;">Marcus Holloway</td>
+                        <td style="padding: 4px; color: green;">Standard Valid Member (Checking + Savings)</td>
+                        <td style="padding: 4px;"><button class="btn-win" onclick="document.getElementById('txtMemberId').value='MEM-4091'; document.getElementById('memberSearchForm').submit();">Load Record</button></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;"><code>MEM-9999</code></td>
+                        <td style="padding: 4px;">(Unknown / Non-Existent)</td>
+                        <td style="padding: 4px; color: red;">Business Exception: Record Not Found</td>
+                        <td style="padding: 4px;"><button class="btn-win" onclick="document.getElementById('txtMemberId').value='MEM-9999'; document.getElementById('memberSearchForm').submit();">Test 404</button></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;"><code>MEM-LOCKED</code></td>
+                        <td style="padding: 4px;">Arthur Pendelton</td>
+                        <td style="padding: 4px; color: orange;">Business Exception: Compliance Freeze / Account Locked</td>
+                        <td style="padding: 4px;"><button class="btn-win" onclick="document.getElementById('txtMemberId').value='MEM-LOCKED'; document.getElementById('memberSearchForm').submit();">Test Freeze</button></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    <div class="statusbar">
+        <div>STATUS: READY FOR SEARCH</div>
+        <div>SYS DATE: 2026-08-13</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "capability_id": "core_banking.member_lookup.hitl_test",
+  "run_id": "RUN-1E346C4C",
+  "status": "SUCCESS",
+  "inputs_applied": {
+    "member_id": "MEM-1082"
+  },
+  "outputs_extracted": {
+    "member_name": "Eleanor Vance",
+    "cif_status": "STATUS: ACTIVE CIF \u2022 OPERATOR: OP-4912",
+    "savings_balance": "$18,940.25",
+    "checking_balance": "$4,250.80"
+  },
+  "business_outcome_code": null,
+  "business_outcome_message": null,
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 2895.4219818115234,
+  "step_records": [
+    {
+      "step_id": "step_0_simulated_roadblock",
+      "description": "Verify security captcha or operator badge check",
+      "action_type": "CLICK",
+      "status": "RECOVERED_BY_OPERATOR",
+      "resolved_value": null,
+      "locator_details": null,
+      "duration_ms": 286.1521244049072,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_step_0_simulated_roadblock.png",
+      "error_message": "Failed to resolve target element after 1 strategy attempts. Strategy: {'primary_role': None, 'accessible_name': None, 'text_content': None, 'placeholder': None, 'label_text': None, 'css_selector': '#nonexistent-captcha-challenge', 'xpath': None, 'visual_anchor': None, 'frame_selector': None, 'confidence_score': 1.0}",
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_1_input_member_id",
+      "description": "Enter target CIF Member Identifier into search textbox",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "MEM-1082",
+      "locator_details": {
+        "strategy_used": "PLACEHOLDER",
+        "selector_string": "placeholder='e.g. MEM-1082'",
+        "resolved_in_ms": 42.87838935852051,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 426.94973945617676,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_step_1_input_member_id.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_submit_search",
+      "description": "Click 'Search Member Records' button to submit inquiry to host",
+      "action_type": "CLICK",
+      "status": "SUCCESS",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Search Member Records']",
+        "resolved_in_ms": 19.796371459960938,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 626.8231868743896,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_step_2_submit_search.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_fail_step_0_simulated_roadblock.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_step_0_simulated_roadblock.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_step_1_input_member_id.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-1E346C4C_step_2_submit_search.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": [
+    {
+      "intervention_id": "INT-CD9C0383",
+      "operator_id": "OPERATOR-JANE-DOE",
+      "resolution_status": "RESUMED",
+      "operator_notes": "Verified terminal session security clearance; dismissed roadblock manually.",
+      "manual_actions_taken": [
+        "Bypassed captcha",
+        "Validated session clearance"
+      ],
+      "resumed_at": "2026-08-13 16:33:29"
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "schema_version": "1.0.0",
+  "capability_id": "core_banking.member_lookup",
+  "name": "Core Banking Member Lookup & Balance Inquiry",
+  "description": "Searches a CIF member record and extracts demographic summary and deposit balances.",
+  "metadata": {
+    "created_at": "2026-08-13T20:34:08Z",
+    "discovered_by": "CUA Discovery Agent v1.0",
+    "source_goal": "look up member 1082 and read their current savings balance",
+    "tenant_scope": "GLOBAL_APEXCORE",
+    "vendor_product": "ApexCore Banking",
+    "version": "1.0.0",
+    "tags": [
+      "banking",
+      "cif",
+      "deterministic-replay",
+      "auto-generated"
+    ]
+  },
+  "entry_point": "http://127.0.0.1:8000/portal/member_search",
+  "inputs": [
+    {
+      "name": "member_id",
+      "type": "string",
+      "description": "Unique core banking CIF member identifier (e.g. MEM-1082)",
+      "required": true,
+      "default": "MEM-1082",
+      "allowed_values": null,
+      "redaction_class": "MEMBER_ID",
+      "example": "MEM-1082"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "member_name",
+      "type": "string",
+      "description": "Full legal name of the CIF member",
+      "target_locator": {
+        "primary_role": "generic",
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#summary-member-name",
+        "xpath": "//strong[@id='summary-member-name']",
+        "visual_anchor": "Full Name:",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": "Eleanor Vance"
+    },
+    {
+      "name": "cif_status",
+      "type": "string",
+      "description": "Status of member CIF record",
+      "target_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": "Active",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#summary-member-status",
+        "xpath": "//span[@id='summary-member-status']",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": "Active"
+    },
+    {
+      "name": "savings_balance",
+      "type": "string",
+      "description": "Current ledger balance of High Yield Savings sub-account",
+      "target_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "tr[data-account-type='High Yield Savings'] .account-balance",
+        "xpath": "//tr[@data-account-type='High Yield Savings']//td[contains(@class,'account-balance')]",
+        "visual_anchor": "High Yield Savings",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": "$18,940.25"
+    },
+    {
+      "name": "checking_balance",
+      "type": "string",
+      "description": "Current ledger balance of Primary Checking sub-account",
+      "target_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "tr[data-account-type='Primary Checking'] .account-balance",
+        "xpath": "//tr[@data-account-type='Primary Checking']//td[contains(@class,'account-balance')]",
+        "visual_anchor": "Primary Checking",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": false,
+      "example": "$4,250.80"
+    }
+  ],
+  "safety_policy": {
+    "allowed_domains": [
+      "127.0.0.1",
+      "localhost"
+    ],
+    "allowed_actions": [
+      "NAVIGATE",
+      "CLICK",
+      "FILL",
+      "SELECT_OPTION",
+      "CHECK",
+      "UNCHECK",
+      "PRESS_KEY",
+      "WAIT_FOR_ELEMENT",
+      "EXTRACT_TEXT",
+      "EXTRACT_ATTRIBUTE",
+      "ASSERT_TEXT",
+      "ASSERT_VISIBLE",
+      "DISMISS_DIALOG"
+    ],
+    "prohibit_external_navigation": true,
+    "max_total_duration_sec": 30,
+    "requires_human_confirmation_for_mutation": false
+  },
+  "steps": [
+    {
+      "step_id": "step_1_input_member_id",
+      "description": "Enter target CIF Member Identifier into search textbox",
+      "action_type": "FILL",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": "e.g. MEM-1082",
+        "label_text": "Member Identifier (CIF#):",
+        "css_selector": "#txtMemberId",
+        "xpath": "//input[@id='txtMemberId' or @name='member_id']",
+        "visual_anchor": "Member Identifier (CIF#):",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": null,
+      "param_binding": "member_id",
+      "timeout_ms": 4000,
+      "risk_level": "SAFE_READ",
+      "optional": false,
+      "wait_after_ms": 200
+    },
+    {
+      "step_id": "step_2_submit_search",
+      "description": "Click 'Search Member Records' button to submit inquiry to host",
+      "action_type": "CLICK",
+      "target": {
+        "primary_role": "button",
+        "accessible_name": "Search Member Records",
+        "text_content": "Search Member Records",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#btnSearchMember",
+        "xpath": "//button[@id='btnSearchMember' or text()='Search Member Records']",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": null,
+      "param_binding": null,
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_READ",
+      "optional": false,
+      "wait_after_ms": 400
+    }
+  ],
+  "checkpoints": [
+    {
+      "checkpoint_id": "chk_member_profile_loaded",
+      "description": "Confirm Member Workspace profile header is visible",
+      "target": {
+        "primary_role": "heading",
+        "accessible_name": null,
+        "text_content": "Eleanor Vance",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#summary-member-name",
+        "xpath": null,
+        "visual_anchor": "Demographics",
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "NOT_EMPTY",
+      "expected_value": null,
+      "critical": true
+    },
+    {
+      "checkpoint_id": "chk_accounts_table_visible",
+      "description": "Confirm Deposit Accounts table is populated",
+      "target": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#tblMemberAccounts",
+        "xpath": "//table[@id='tblMemberAccounts']",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    }
+  ],
+  "business_outcomes": [
+    {
+      "outcome_code": "MEMBER_NOT_FOUND",
+      "description": "Core banking host returned Record Not Found for provided CIF identifier",
+      "trigger_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": "[ERROR CODE: MEMBER_NOT_FOUND]",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#error-code-badge",
+        "xpath": "//*[contains(text(), 'MEMBER_NOT_FOUND')]",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "trigger_condition": "VISIBLE",
+      "expected_text_pattern": "MEMBER_NOT_FOUND",
+      "extract_message": true
+    },
+    {
+      "outcome_code": "COMPLIANCE_HOLD_BLOCKED",
+      "description": "Member CIF profile is locked under compliance review / BSA hold",
+      "trigger_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": "[ERROR CODE: COMPLIANCE_HOLD_BLOCKED]",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#error-code-badge",
+        "xpath": "//*[contains(text(), 'COMPLIANCE_HOLD_BLOCKED')]",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "trigger_condition": "VISIBLE",
+      "expected_text_pattern": "COMPLIANCE_HOLD_BLOCKED",
+      "extract_message": true
+    }
+  ],
+  "recoverable_conditions": [
+    {
+      "condition_id": "rec_security_notice_interstitial",
+      "description": "Daily audit security notice banner needing acknowledgment",
+      "detection_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#security-notice-interstitial",
+        "xpath": "//div[@id='security-notice-interstitial']",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "recovery_action": "CLICK",
+      "recovery_target": {
+        "primary_role": "button",
+        "accessible_name": "Acknowledge & Dismiss",
+        "text_content": "Acknowledge & Dismiss",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#btn-ack-interstitial",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "max_retries": 2
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ApexCore Banking System - Sub-Account Origination</title>
+    <style>
+        body { font-family: "Lucida Console", "Courier New", monospace, Tahoma, sans-serif; margin: 0; background-color: #d4d0c8; color: #000; font-size: 12px; }
+        .header { background: linear-gradient(to right, #000080, #1084d0); color: white; padding: 4px 8px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #808080; }
+        .toolbar { background: #ece9d8; border-bottom: 1px solid #999; padding: 4px 8px; display: flex; gap: 8px; }
+        .btn-win { background: #ece9d8; border: 2px outset #ffffff; padding: 4px 12px; cursor: pointer; font-size: 11px; font-family: Tahoma, sans-serif; }
+        .btn-win:active { border-style: inset; }
+        .btn-primary { background: #000080; color: white; border: 2px outset #000080; font-weight: bold; }
+        .btn-success { background: #008000; color: white; border: 2px outset #008000; font-weight: bold; }
+        .main-container { display: flex; height: calc(100vh - 55px); }
+        .sidebar { width: 220px; background: #dfdfdf; border-right: 2px solid #808080; padding: 6px; }
+        .sidebar-title { font-weight: bold; background: #000080; color: #fff; padding: 2px 4px; margin-bottom: 4px; font-size: 11px; }
+        .nav-tree { list-style: none; padding-left: 10px; margin: 0; }
+        .nav-tree li { margin: 6px 0; }
+        .nav-tree a { color: #000080; text-decoration: none; font-size: 12px; }
+        .content { flex: 1; padding: 12px; background: #ffffff; overflow-y: auto; }
+        .statusbar { background: #ece9d8; border-top: 1px solid #808080; padding: 2px 6px; font-size: 11px; display: flex; justify-content: space-between; position: fixed; bottom: 0; width: 100%; }
+        fieldset { border: 2px groove #ece9d8; padding: 14px; margin-bottom: 14px; background: #fafafa; }
+        legend { font-weight: bold; color: #000080; font-family: Tahoma, sans-serif; font-size: 12px; }
+        .form-table td { padding: 6px 8px; }
+        .form-input { font-family: "Lucida Console", monospace; font-size: 12px; padding: 4px 6px; border: 2px inset #ffffff; background: #fff; width: 260px; }
+        .success-box { background: #e6ffed; border: 2px solid #52c41a; padding: 15px; margin: 15px 0; }
+        .code-box { background: #f0f0f0; border: 1px dashed #333; padding: 8px 12px; font-family: monospace; font-size: 14px; font-weight: bold; color: #000080; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>[APEX-CORE v4.8.2] &bull; MODULE: SUB-ACCOUNT ORIGINATION &bull; HOST: MASTER-01</div>
+        <div style="font-size: 11px;">OPERATOR: OP-4912</div>
+    </div>
+    <div class="toolbar">
+        <button class="btn-win" onclick="location.href='/portal/member_search'">&larr; Back to Member Search (F2)</button>
+        <button class="btn-win" onclick="location.href='/'">Cancel / Home</button>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-title">ORIGINATION FLOW</div>
+            <ul class="nav-tree">
+                <li>1. Target CIF Member</li>
+                <li>2. Select Product Type</li>
+                <li>3. Initial Funding & Terms</li>
+                <li>4. Core Confirmation</li>
+            </ul>
+        </div>
+        <div class="content">
+            {% if step == 1 %}
+            <fieldset>
+                <legend>Open New Sub-Account for Member {{ member_id }}</legend>
+                <p>Establishing new secondary ledger share under primary CIF profile <strong>{{ member_id }}</strong> ({{ member.name if member else 'Unknown' }}).</p>
+                
+                <form action="/portal/subaccount/submit" method="POST" id="subAccountForm">
+                    <input type="hidden" name="member_id" value="{{ member_id }}" />
+                    
+                    <table class="form-table">
+                        <tr>
+                            <td style="width: 200px; font-weight: bold;">Member CIF Number:</td>
+                            <td>
+                                <input type="text" class="form-input" value="{{ member_id }}" disabled style="background: #e9ecef;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Product Category / Type:</td>
+                            <td>
+                                <select name="account_type" id="selectAccountType" class="form-input" style="width: 275px;">
+                                    <option value="High Yield Savings" selected>High Yield Savings (APY 4.25%)</option>
+                                    <option value="Money Market Advantage">Money Market Advantage (APY 4.75%)</option>
+                                    <option value="Holiday Club Share">Holiday Club Share</option>
+                                    <option value="Health Savings Share (HSA)">Health Savings Share (HSA)</option>
+                                    <option value="Secondary Checking">Secondary Checking (Zero Fee)</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Initial Deposit Amount ($):</td>
+                            <td>
+                                <input type="text" name="initial_deposit" id="txtInitialDeposit" class="form-input" value="$150.00" required />
+                                <span style="font-size: 11px; color: #555; margin-left: 6px;">(Min. $25.00)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Dividend Settlement:</td>
+                            <td>
+                                <select name="dividend_option" class="form-input" style="width: 275px;">
+                                    <option value="compounded" selected>Reinvest / Compound to Sub-Account</option>
+                                    <option value="transfer_primary">Transfer Monthly to Primary Checking</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Compliance & Operator Signoff:</td>
+                            <td>
+                                <label style="cursor: pointer;">
+                                    <input type="checkbox" name="operator_override" id="chkComplianceAck" value="YES" checked />
+                                    <span>Operator certifies KYC & Patriot Act CIP verification completed</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="padding-top: 15px;">
+                                <button type="submit" id="btnSubmitSubAccount" class="btn-win btn-primary" style="padding: 6px 20px; font-size: 12px;">Create Sub-Account & Issue Core ID</button>
+                                <button type="button" class="btn-win" onclick="location.href='/portal/member/{{ member_id }}'" style="margin-left: 8px;">Cancel</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
+            {% elif step == 2 %}
+            <div class="success-box" id="subaccount-confirmation-panel">
+                <h3 style="margin-top: 0; color: #237804;">&check; Core Banking Sub-Account Successfully Created</h3>
+                <p>The host system has generated a new sub-account ledger under CIF <strong>{{ member_id }}</strong>.</p>
+                
+                <table class="legacy-grid" style="width: 550px; background: white; margin: 15px 0;">
+                    <tr><th style="width: 200px;">Assigned Account Number</th><td><strong id="created-account-number" style="font-size: 13px; color: #000080;">{{ created_account.account_number }}</strong></td></tr>
+                    <tr><th>Account Product Type</th><td id="created-account-type">{{ created_account.type }}</td></tr>
+                    <tr><th>Opening Ledger Balance</th><td id="created-account-balance"><strong>{{ created_account.balance }}</strong></td></tr>
+                    <tr><th>Status</th><td><span style="color: green; font-weight: bold;">OPEN &bull; ACTIVE</span></td></tr>
+                    <tr><th>Core Host Confirmation Code</th><td><span class="code-box" id="confirmation-code">{{ confirmation_code }}</span></td></tr>
+                </table>
+
+                <div style="margin-top: 20px;">
+                    <a href="/portal/member/{{ member_id }}" id="btnReturnToMember" class="btn-win btn-success" style="text-decoration: none; padding: 6px 16px; display: inline-block;">Return to Member Profile</a>
+                    <a href="/portal/member_search" class="btn-win" style="text-decoration: none; padding: 6px 16px; margin-left: 8px; display: inline-block;">Search Another Member</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="statusbar">
+        <div>STATUS: {{ 'ORIGINATION COMPLETE' if step == 2 else 'READY FOR SUBMISSION' }}</div>
+        <div>SYS DATE: 2026-08-13</div>
+    </div>
+</body>
+</html>

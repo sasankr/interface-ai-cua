@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ApexCore Banking System - Member Account Summary [{{ member.id }}]</title>
+    <style>
+        body { font-family: "Lucida Console", "Courier New", monospace, Tahoma, sans-serif; margin: 0; background-color: #d4d0c8; color: #000; font-size: 12px; }
+        .header { background: linear-gradient(to right, #000080, #1084d0); color: white; padding: 4px 8px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #808080; }
+        .toolbar { background: #ece9d8; border-bottom: 1px solid #999; padding: 4px 8px; display: flex; gap: 8px; }
+        .btn-win { background: #ece9d8; border: 2px outset #ffffff; padding: 3px 10px; cursor: pointer; font-size: 11px; font-family: Tahoma, sans-serif; }
+        .btn-win:active { border-style: inset; }
+        .btn-action { background: #008080; color: white; border: 2px outset #008080; font-weight: bold; }
+        .main-container { display: flex; height: calc(100vh - 55px); }
+        .sidebar { width: 220px; background: #dfdfdf; border-right: 2px solid #808080; padding: 6px; }
+        .sidebar-title { font-weight: bold; background: #000080; color: #fff; padding: 2px 4px; margin-bottom: 4px; font-size: 11px; }
+        .nav-tree { list-style: none; padding-left: 10px; margin: 0; }
+        .nav-tree li { margin: 6px 0; }
+        .nav-tree a { color: #000080; text-decoration: none; font-size: 12px; }
+        .content { flex: 1; padding: 12px; background: #ffffff; overflow-y: auto; }
+        .statusbar { background: #ece9d8; border-top: 1px solid #808080; padding: 2px 6px; font-size: 11px; display: flex; justify-content: space-between; position: fixed; bottom: 0; width: 100%; }
+        fieldset { border: 2px groove #ece9d8; padding: 10px; margin-bottom: 14px; background: #fafafa; }
+        legend { font-weight: bold; color: #000080; font-family: Tahoma, sans-serif; font-size: 12px; }
+        table.legacy-grid { width: 100%; border-collapse: collapse; border: 1px solid #808080; font-size: 12px; }
+        table.legacy-grid th { background: #ece9d8; border: 1px solid #808080; padding: 5px; text-align: left; font-family: Tahoma, sans-serif; }
+        table.legacy-grid td { border: 1px solid #c0c0c0; padding: 6px; }
+        table.legacy-grid tr:nth-child(even) { background: #f2f2f2; }
+        .account-row:hover { background: #ffffcc !important; }
+        .tag-active { background: #d4edda; color: #155724; padding: 2px 6px; border: 1px solid #c3e6cb; font-size: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>[APEX-CORE v4.8.2] &bull; MEMBER PROFILE: {{ member.id }} &bull; {{ member.name }}</div>
+        <div style="font-size: 11px;">STATUS: ACTIVE CIF &bull; OPERATOR: OP-4912</div>
+    </div>
+    <div class="toolbar">
+        <button class="btn-win" onclick="location.href='/portal/member_search'">&larr; Back to Member Search (F2)</button>
+        <button class="btn-win btn-action" id="btnOpenSubAccountDirect" onclick="location.href='/portal/subaccount/open?member_id={{ member.id }}'">+ Open Sub-Account (F4)</button>
+        <button class="btn-win" onclick="window.print()">Print Statement (F8)</button>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-title">MEMBER WORKSPACE</div>
+            <ul class="nav-tree">
+                <li>&bull; <a href="#profile">Demographic Summary</a></li>
+                <li>&bull; <a href="#accounts"><strong>Share & Deposit Accounts</strong></a></li>
+                <li>&bull; <a href="/portal/subaccount/open?member_id={{ member.id }}">New Sub-Account</a></li>
+                <li>&bull; <a href="/portal/member_search">New Member Query</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Member Header Summary Card -->
+            <fieldset id="profile">
+                <legend>Primary Customer Information File (CIF) Demographics</legend>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <tr>
+                        <td style="width: 15%; font-weight: bold; color: #555;">Member ID:</td>
+                        <td style="width: 35%;"><strong id="summary-member-id" style="color: #000080; font-size: 13px;">{{ member.id }}</strong></td>
+                        <td style="width: 15%; font-weight: bold; color: #555;">Full Name:</td>
+                        <td style="width: 35%;"><strong id="summary-member-name">{{ member.name }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: #555;">SSN (Last 4):</td>
+                        <td>***-**-{{ member.ssn_last4 }}</td>
+                        <td style="font-weight: bold; color: #555;">CIF Status:</td>
+                        <td><span class="tag-active" id="summary-member-status">{{ member.status }}</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: #555;">Home Branch:</td>
+                        <td>{{ member.branch }}</td>
+                        <td style="font-weight: bold; color: #555;">Relationship Date:</td>
+                        <td>{{ member.joined_date }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: #555;">Email Contact:</td>
+                        <td>{{ member.email }}</td>
+                        <td style="font-weight: bold; color: #555;">Phone:</td>
+                        <td>{{ member.phone }}</td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <!-- Accounts Table -->
+            <fieldset id="accounts">
+                <legend>Active Deposit, Checking, and Certificate Accounts</legend>
+                <table class="legacy-grid" id="tblMemberAccounts">
+                    <thead>
+                        <tr>
+                            <th style="width: 180px;">Account Number</th>
+                            <th style="width: 220px;">Product / Sub-Account Type</th>
+                            <th style="width: 180px; text-align: right;">Current Ledger Balance</th>
+                            <th style="width: 120px; text-align: center;">Status</th>
+                            <th>Quick Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for act in member.accounts %}
+                        <tr class="account-row" data-account-type="{{ act.type }}">
+                            <td><strong class="account-number">{{ act.account_number }}</strong></td>
+                            <td class="account-type">{{ act.type }}</td>
+                            <td style="text-align: right; font-weight: bold; font-size: 13px;" class="account-balance" data-balance="{{ act.balance }}">{{ act.balance }}</td>
+                            <td style="text-align: center;"><span class="tag-active">{{ act.status }}</span></td>
+                            <td>
+                                <button class="btn-win" style="font-size: 10px;" onclick="alert('Transaction history for {{ act.account_number }}');">View Ledger</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="color: #666; font-size: 11px;">Total Active Accounts: {{ member.accounts|length }}</div>
+                    <a href="/portal/subaccount/open?member_id={{ member.id }}" id="lnkOpenNewSubAccount" class="btn-win btn-action" style="text-decoration: none; display: inline-block;">
+                        &plus; Open New Sub-Account for {{ member.name }}
+                    </a>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="statusbar">
+        <div>MEMBER LOADED: {{ member.id }} [{{ member.name }}]</div>
+        <div>RECORD LOCK: EXCLUSIVE (SESSION HELD)</div>
+    </div>
+</body>
+</html>

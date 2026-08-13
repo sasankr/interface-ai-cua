@@ -1,0 +1,81 @@
+{
+  "capability_id": "core_banking.open_subaccount",
+  "run_id": "RUN-67C20293",
+  "status": "SUCCESS",
+  "inputs_applied": {
+    "member_id": "MEM-1082",
+    "account_type": "High Yield Savings (APY 4.25%)",
+    "initial_deposit": "$300.00"
+  },
+  "outputs_extracted": {
+    "assigned_account_number": "ACT-1082-04",
+    "confirmation_code": "CONF-SUB-1082-98124"
+  },
+  "business_outcome_code": null,
+  "business_outcome_message": null,
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 3085.752487182617,
+  "step_records": [
+    {
+      "step_id": "step_1_select_product",
+      "description": "Select sub-account product category dropdown",
+      "action_type": "SELECT_OPTION",
+      "status": "SUCCESS",
+      "resolved_value": "High Yield Savings (APY 4.25%)",
+      "locator_details": {
+        "strategy_used": "CSS_SELECTOR",
+        "selector_string": "#selectAccountType",
+        "resolved_in_ms": 32.91177749633789,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 408.5731506347656,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-67C20293_step_1_select_product.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_set_initial_deposit",
+      "description": "Input initial funding amount",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "$300.00",
+      "locator_details": {
+        "strategy_used": "CSS_SELECTOR",
+        "selector_string": "#txtInitialDeposit",
+        "resolved_in_ms": 21.001100540161133,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 324.9530792236328,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-67C20293_step_2_set_initial_deposit.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_3_confirm_and_submit",
+      "description": "Submit origination request to core banking host",
+      "action_type": "CLICK",
+      "status": "SUCCESS",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Create Sub-Account & Issue Core ID']",
+        "resolved_in_ms": 30.00926971435547,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 712.4896049499512,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-67C20293_step_3_confirm_and_submit.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-67C20293_step_1_select_product.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-67C20293_step_2_set_initial_deposit.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-67C20293_step_3_confirm_and_submit.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": []
+}

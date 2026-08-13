@@ -1,0 +1,235 @@
+{
+  "schema_version": "1.0.0",
+  "capability_id": "core_banking.open_subaccount",
+  "name": "Open Core Banking Sub-Account",
+  "description": "Creates a new sub-account ledger under an active CIF profile.",
+  "metadata": {
+    "created_at": "2026-08-13T20:34:10Z",
+    "discovered_by": "CUA Discovery Agent v1.0",
+    "source_goal": "open a new sub-account for this member and reach the confirmation screen",
+    "tenant_scope": "GLOBAL_APEXCORE",
+    "vendor_product": "ApexCore Banking",
+    "version": "1.0.0",
+    "tags": [
+      "banking",
+      "cif",
+      "deterministic-replay",
+      "auto-generated"
+    ]
+  },
+  "entry_point": "http://127.0.0.1:8000/portal/subaccount/open",
+  "inputs": [
+    {
+      "name": "member_id",
+      "type": "string",
+      "description": "Target CIF member identifier",
+      "required": true,
+      "default": "MEM-1082",
+      "allowed_values": null,
+      "redaction_class": null,
+      "example": null
+    },
+    {
+      "name": "account_type",
+      "type": "string",
+      "description": "Product category to establish",
+      "required": false,
+      "default": "High Yield Savings (APY 4.25%)",
+      "allowed_values": null,
+      "redaction_class": null,
+      "example": null
+    },
+    {
+      "name": "initial_deposit",
+      "type": "string",
+      "description": "Initial deposit funding amount",
+      "required": false,
+      "default": "$250.00",
+      "allowed_values": null,
+      "redaction_class": null,
+      "example": null
+    }
+  ],
+  "outputs": [
+    {
+      "name": "assigned_account_number",
+      "type": "string",
+      "description": "Generated sub-account identifier (e.g. ACT-1082-04)",
+      "target_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#created-account-number",
+        "xpath": "//strong[@id='created-account-number']",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": null
+    },
+    {
+      "name": "confirmation_code",
+      "type": "string",
+      "description": "Host authorization confirmation code",
+      "target_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#confirmation-code",
+        "xpath": "//span[@id='confirmation-code']",
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "extraction_attribute": null,
+      "regex_capture": null,
+      "required": true,
+      "example": null
+    }
+  ],
+  "safety_policy": {
+    "allowed_domains": [
+      "127.0.0.1",
+      "localhost"
+    ],
+    "allowed_actions": [
+      "NAVIGATE",
+      "CLICK",
+      "FILL",
+      "SELECT_OPTION",
+      "CHECK",
+      "UNCHECK",
+      "PRESS_KEY",
+      "WAIT_FOR_ELEMENT",
+      "EXTRACT_TEXT",
+      "EXTRACT_ATTRIBUTE",
+      "ASSERT_TEXT",
+      "ASSERT_VISIBLE",
+      "DISMISS_DIALOG"
+    ],
+    "prohibit_external_navigation": true,
+    "max_total_duration_sec": 30,
+    "requires_human_confirmation_for_mutation": false
+  },
+  "steps": [
+    {
+      "step_id": "step_1_select_product",
+      "description": "Select sub-account product category dropdown",
+      "action_type": "SELECT_OPTION",
+      "target": {
+        "primary_role": "combobox",
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": "Product Category / Type:",
+        "css_selector": "#selectAccountType",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": null,
+      "param_binding": "account_type",
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_WRITE",
+      "optional": false,
+      "wait_after_ms": 200
+    },
+    {
+      "step_id": "step_2_set_initial_deposit",
+      "description": "Input initial funding amount",
+      "action_type": "FILL",
+      "target": {
+        "primary_role": "textbox",
+        "accessible_name": null,
+        "text_content": null,
+        "placeholder": null,
+        "label_text": "Initial Deposit Amount ($):",
+        "css_selector": "#txtInitialDeposit",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": null,
+      "param_binding": "initial_deposit",
+      "timeout_ms": 5000,
+      "risk_level": "SAFE_WRITE",
+      "optional": false,
+      "wait_after_ms": 200
+    },
+    {
+      "step_id": "step_3_confirm_and_submit",
+      "description": "Submit origination request to core banking host",
+      "action_type": "CLICK",
+      "target": {
+        "primary_role": "button",
+        "accessible_name": "Create Sub-Account & Issue Core ID",
+        "text_content": "Create Sub-Account & Issue Core ID",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#btnSubmitSubAccount",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "value": null,
+      "param_binding": null,
+      "timeout_ms": 5000,
+      "risk_level": "IRREVERSIBLE",
+      "optional": false,
+      "wait_after_ms": 500
+    }
+  ],
+  "checkpoints": [
+    {
+      "checkpoint_id": "chk_subaccount_confirmation_banner",
+      "description": "Confirm success confirmation panel is displayed",
+      "target": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": "Core Banking Sub-Account Successfully Created",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#subaccount-confirmation-panel",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "assertion_type": "VISIBLE",
+      "expected_value": null,
+      "critical": true
+    }
+  ],
+  "business_outcomes": [
+    {
+      "outcome_code": "VALIDATION_MIN_DEPOSIT",
+      "description": "Initial deposit amount below minimum required by policy ($25.00)",
+      "trigger_locator": {
+        "primary_role": null,
+        "accessible_name": null,
+        "text_content": "[ERROR CODE: VALIDATION_MIN_DEPOSIT]",
+        "placeholder": null,
+        "label_text": null,
+        "css_selector": "#error-code-badge",
+        "xpath": null,
+        "visual_anchor": null,
+        "frame_selector": null,
+        "confidence_score": 1.0
+      },
+      "trigger_condition": "VISIBLE",
+      "expected_text_pattern": null,
+      "extract_message": true
+    }
+  ],
+  "recoverable_conditions": []
+}

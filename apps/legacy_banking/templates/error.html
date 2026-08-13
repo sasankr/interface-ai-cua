@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ApexCore Banking System - Host Exception Notice</title>
+    <style>
+        body { font-family: "Lucida Console", "Courier New", monospace, Tahoma, sans-serif; margin: 0; background-color: #d4d0c8; color: #000; font-size: 12px; }
+        .header { background: linear-gradient(to right, #800000, #d01010); color: white; padding: 4px 8px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #808080; }
+        .toolbar { background: #ece9d8; border-bottom: 1px solid #999; padding: 4px 8px; display: flex; gap: 8px; }
+        .btn-win { background: #ece9d8; border: 2px outset #ffffff; padding: 3px 10px; cursor: pointer; font-size: 11px; font-family: Tahoma, sans-serif; }
+        .btn-win:active { border-style: inset; }
+        .main-container { display: flex; height: calc(100vh - 55px); }
+        .sidebar { width: 220px; background: #dfdfdf; border-right: 2px solid #808080; padding: 6px; }
+        .sidebar-title { font-weight: bold; background: #800000; color: #fff; padding: 2px 4px; margin-bottom: 4px; font-size: 11px; }
+        .content { flex: 1; padding: 16px; background: #ffffff; overflow-y: auto; }
+        .statusbar { background: #ece9d8; border-top: 1px solid #808080; padding: 2px 6px; font-size: 11px; display: flex; justify-content: space-between; position: fixed; bottom: 0; width: 100%; }
+        .error-card { border: 2px solid #cc0000; background: #fff5f5; padding: 16px; margin-bottom: 16px; }
+        .error-code { font-family: monospace; font-size: 14px; font-weight: bold; color: #cc0000; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>[APEX-CORE v4.8.2] &bull; HOST EXCEPTION &bull; MODULE: CIF-CONTROLLER</div>
+        <div style="font-size: 11px;">SEVERITY: BUSINESS_OUTCOME</div>
+    </div>
+    <div class="toolbar">
+        <button class="btn-win" id="btnBackToSearch" onclick="location.href='/portal/member_search'">&larr; Return to Member Search</button>
+        <button class="btn-win" onclick="location.href='/'">Home</button>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-title">EXCEPTION ROUTING</div>
+            <p style="font-size: 11px; color: #666;">The host controller encountered a non-standard business condition during CIF resolution.</p>
+        </div>
+        <div class="content">
+            <div class="error-card" id="exception-notice-container">
+                <div class="error-code" id="error-code-badge">[ERROR CODE: {{ error_code }}]</div>
+                <h3 style="color: #990000; margin-top: 8px;" id="error-title">{{ title }}</h3>
+                <p style="font-size: 13px; line-height: 1.4;" id="error-message">{{ message }}</p>
+                
+                <div style="margin-top: 15px; background: #fff; padding: 10px; border: 1px solid #ddd; font-family: monospace; font-size: 11px;">
+                    <div>Target Identifier: <strong id="error-member-id">{{ member_id or 'N/A' }}</strong></div>
+                    <div>Host Trace Ref: TRACE-HOST-{{ error_code }}-9942</div>
+                    <div>Outcome Classification: BUSINESS_EXCEPTION_RECORD_STATUS</div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <a href="/portal/member_search" id="lnkSearchRetry" class="btn-win" style="text-decoration: none; padding: 6px 16px; display: inline-block;">Return to Member Lookup</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="statusbar">
+        <div>STATUS: EXCEPTION RECORDED [{{ error_code }}]</div>
+        <div>SYS DATE: 2026-08-13</div>
+    </div>
+</body>
+</html>

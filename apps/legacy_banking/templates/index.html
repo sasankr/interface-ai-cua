@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ApexCore Banking System - Host Operations Console</title>
+    <style>
+        body { font-family: "Lucida Console", "Courier New", monospace, Tahoma, sans-serif; margin: 0; background-color: #d4d0c8; color: #000; font-size: 12px; }
+        .header { background: linear-gradient(to right, #000080, #1084d0); color: white; padding: 4px 8px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #808080; }
+        .toolbar { background: #ece9d8; border-bottom: 1px solid #999; padding: 4px 8px; display: flex; gap: 8px; }
+        .btn-win { background: #ece9d8; border: 2px outset #ffffff; padding: 3px 10px; cursor: pointer; font-size: 11px; font-family: Tahoma, sans-serif; }
+        .btn-win:active { border-style: inset; }
+        .main-container { display: flex; height: calc(100vh - 55px); }
+        .sidebar { width: 220px; background: #dfdfdf; border-right: 2px solid #808080; padding: 6px; }
+        .sidebar-title { font-weight: bold; background: #000080; color: #fff; padding: 2px 4px; margin-bottom: 4px; font-size: 11px; }
+        .nav-tree { list-style: none; padding-left: 10px; margin: 0; }
+        .nav-tree li { margin: 6px 0; }
+        .nav-tree a { color: #000080; text-decoration: none; font-size: 12px; }
+        .nav-tree a:hover { text-decoration: underline; background: #ffff99; }
+        .content { flex: 1; padding: 12px; background: #ffffff; overflow-y: auto; }
+        .statusbar { background: #ece9d8; border-top: 1px solid #808080; padding: 2px 6px; font-size: 11px; display: flex; justify-content: space-between; position: fixed; bottom: 0; width: 100%; }
+        fieldset { border: 2px groove #ece9d8; padding: 10px; margin-bottom: 12px; }
+        legend { font-weight: bold; color: #000080; font-family: Tahoma, sans-serif; font-size: 12px; }
+        table.legacy-grid { width: 100%; border-collapse: collapse; border: 1px solid #808080; font-size: 12px; }
+        table.legacy-grid th { background: #ece9d8; border: 1px solid #808080; padding: 4px; text-align: left; }
+        table.legacy-grid td { border: 1px solid #c0c0c0; padding: 4px; }
+        table.legacy-grid tr:nth-child(even) { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>[APEX-CORE v4.8.2] &bull; TENANT: {{ tenant_id }} &bull; ENVIRONMENT: PROD-EAST-01</div>
+        <div style="font-size: 11px;">OPERATOR: OP-4912 &bull; TERMINAL: TTY-08</div>
+    </div>
+    <div class="toolbar">
+        <button class="btn-win" onclick="location.href='/portal/member_search'">Member Inquiry (F2)</button>
+        <button class="btn-win" onclick="location.href='/portal/subaccount/open'">Open Sub-Account (F4)</button>
+        <button class="btn-win" onclick="alert('Session audit logged.');">Audit Trail (F9)</button>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-title">NAVIGATION MENU</div>
+            <ul class="nav-tree">
+                <li>&blacktriangleright; <strong>CIF Operations</strong>
+                    <ul style="list-style: none; padding-left: 12px;">
+                        <li>&bull; <a href="/portal/member_search">Member Search & Summary</a></li>
+                        <li>&bull; <a href="/portal/subaccount/open">New Sub-Account Creation</a></li>
+                    </ul>
+                </li>
+                <li style="margin-top: 10px;">&blacktriangleright; <strong>General Ledger</strong>
+                    <ul style="list-style: none; padding-left: 12px;">
+                        <li>&bull; <a href="#" onclick="alert('Module restricted');">Journal Postings</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <fieldset>
+                <legend>System Dispatcher & Operational Status</legend>
+                <p>Welcome to <strong>ApexCore Integrated Member Servicing Platform</strong>.</p>
+                <table class="legacy-grid" style="width: 500px;">
+                    <tr><th>Parameter</th><th>Value</th></tr>
+                    <tr><td>Connected Host Partition</td><td>CORE-CIF-MASTER-01</td></tr>
+                    <tr><td>Active Tenant ID</td><td>{{ tenant_id }}</td></tr>
+                    <tr><td>Daily Settlement Cycle</td><td>OPEN (Business Day: 2026-08-13)</td></tr>
+                    <tr><td>Security Level</td><td>LEVEL-3 (Sensitive Financial Records Access)</td></tr>
+                </table>
+                <div style="margin-top: 15px;">
+                    <a href="/portal/member_search" style="font-weight: bold; font-size: 13px; color: #000080;">&rarr; Launch Member Search & Account Inquiry</a>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="statusbar">
+        <div>STATUS: READY | HOST CONNECTED (Latency: 12ms)</div>
+        <div>SYS DATE: 2026-08-13</div>
+    </div>
+</body>
+</html>
