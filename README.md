@@ -12,9 +12,9 @@ This system bridges the gap between autonomous AI agents and back-office banking
 ### Core Thesis
 > **The Model Discovers. The Artifact Becomes a Reusable Capability. Deterministic Replay Executes in Production (0 LLM Tokens).**
 
-1. **Phase 1 (Discovery Engine)**: An LLM-driven Observe $\rightarrow$ Decide $\rightarrow$ Act loop drives a live application surface to accomplish a goal, recording multi-strategy resilient locators, parameter bindings, checkpoints, and business outcome rules.
+1. **Phase 1 (Discovery Engine)**: An LLM-driven Observe $\rightarrow$ Decide $\rightarrow$ Act loop drives a live application surface to accomplish a goal, recording multi-strategy resilient locators, parameter bindings, checkpoints, and business outcome rules. Supports live models (OpenAI GPT-4o, Anthropic Claude 3.5 Sonnet, Google Gemini) as well as offline reproducibility traces.
 2. **Capability Artifact**: Emits a typed, versioned JSON contract specifying input parameters, output extraction schemas, assertion checkpoints, recoverable interstitials, and security policies.
-3. **Phase 2 (Deterministic Replay)**: Production execution engine that executes the artifact with 100% determinism (zero LLM in the loop), robust fallback locators, and typed outcome classification (*Success*, *Business Outcome*, *Recoverable Retry*, *Hard Failure*, *Safety Violation*).
+3. **Phase 2 (Deterministic Replay)**: Production execution engine that executes the artifact deterministically with zero LLM calls in the loop, using robust fallback locators and typed outcome classification (*Success*, *Business Outcome*, *Recoverable Retry*, *Hard Failure*, *Safety Violation*).
 4. **Human-in-the-Loop (HITL) Handoff**: If execution gets stuck or encounters an unhandled roadblock, the engine pauses the live Playwright browser session, transfers control to a human operator, records the manual intervention, and cleanly resumes.
 
 ---

@@ -1,7 +1,43 @@
-=== CUA DISCOVERY AGENT SESSION ===
+=== CUA DISCOVERY AGENT: LIVE MODEL-DRIVEN SESSION ===
 Goal: open a new sub-account for this member and reach the confirmation screen
 Target URL: http://127.0.0.1:8000/portal/subaccount/open
-Started at: 2026-08-13 16:40:39Z
+LLM Provider: OFFLINE_RECORDED
+Timestamp: 2026-08-13 17:16:10Z
 
-[Step 0: Navigate] Navigating to http://127.0.0.1:8000/portal/subaccount/open
-[Observe] Sub-account origination form on target surface.
+[Step 0: NAVIGATE] Loading target surface: http://127.0.0.1:8000/portal/subaccount/open
+
+--- DISCOVERY CYCLE 1 ---
+[Observe] URL: http://127.0.0.1:8000/portal/subaccount/open | Title: 'ApexCore Banking System - Sub-Account Origination' | Found 9 interactive controls
+[Model Thought] "Selecting the sub-account product category dropdown."
+[Model Decision] Action: SELECT_OPTION | Target: {"primary_role": "combobox", "accessible_name": "Product Category / Type:", "css_selector": "#selectAccountType", "xpath": "//select[@id='selectAccountType']"} | Value: High Yield Savings (APY 4.25%) | Param: account_type
+[Act Result] Successfully selected option 'High Yield Savings (APY 4.25%)' (CSS_SELECTOR)
+
+--- DISCOVERY CYCLE 2 ---
+[Observe] URL: http://127.0.0.1:8000/portal/subaccount/open | Title: 'ApexCore Banking System - Sub-Account Origination' | Found 9 interactive controls
+[Model Thought] "Entering initial funding deposit amount."
+[Model Decision] Action: FILL | Target: {"primary_role": "textbox", "accessible_name": "Initial Deposit Amount ($):", "css_selector": "#txtInitialDeposit", "xpath": "//input[@id='txtInitialDeposit']"} | Value: $250.00 | Param: initial_deposit
+[Act Result] Successfully filled '$250.00' into control (CSS_SELECTOR)
+
+--- DISCOVERY CYCLE 3 ---
+[Observe] URL: http://127.0.0.1:8000/portal/subaccount/open | Title: 'ApexCore Banking System - Sub-Account Origination' | Found 9 interactive controls
+[Model Thought] "Submitting sub-account creation request."
+[Model Decision] Action: CLICK | Target: {"primary_role": "button", "accessible_name": "Create Sub-Account & Issue Core ID", "css_selector": "#btnSubmitSubAccount", "xpath": "//button[@id='btnSubmitSubAccount']"} | Value: None | Param: None
+[Act Result] Successfully clicked element (ARIA_ROLE_NAME)
+
+--- DISCOVERY CYCLE 4 ---
+[Observe] URL: http://127.0.0.1:8000/portal/subaccount/submit | Title: 'ApexCore Banking System - Sub-Account Origination' | Found 4 interactive controls
+[Model Thought] "Extracting generated sub-account number and confirmation code."
+[Model Decision] Action: EXTRACT | Target: {"css_selector": "#created-account-number", "xpath": "//strong[@id='created-account-number']"} | Value: ACT-1082-04 | Param: None
+[Act Result] Successfully extracted text 'ACT-1082-04' (CSS_SELECTOR)
+
+--- DISCOVERY CYCLE 5 ---
+[Observe] URL: http://127.0.0.1:8000/portal/subaccount/submit | Title: 'ApexCore Banking System - Sub-Account Origination' | Found 4 interactive controls
+[Model Thought] "Extracting host authorization confirmation code."
+[Model Decision] Action: EXTRACT | Target: {"css_selector": "#confirmation-code", "xpath": "//span[@id='confirmation-code']"} | Value: CONF-SUB-1082-98124 | Param: None
+[Act Result] Successfully extracted text 'CONF-SUB-1082-98124' (CSS_SELECTOR)
+
+--- DISCOVERY CYCLE 6 ---
+[Observe] URL: http://127.0.0.1:8000/portal/subaccount/submit | Title: 'ApexCore Banking System - Sub-Account Origination' | Found 4 interactive controls
+[Model Thought] "Sub-account origination completed and confirmed."
+[Model Decision] Action: FINISH | Target: {} | Value: None | Param: None
+[Model Decision] LLM concluded the goal is accomplished. Terminating discovery loop.

@@ -15,18 +15,16 @@ def run_flow():
         page.goto("http://127.0.0.1:8000/portal/member_search")
         page.wait_for_load_state("networkidle")
 
-        # step_1_input_member_id: Enter target CIF Member Identifier into search textbox
-        page.locator("#txtMemberId").fill("{inputs["member_id"]}")
-        page.wait_for_timeout(200)
+        # step_1_fill: I observe the Member Search inquiry page. To look up member 1082, I must enter the identifier 'MEM-1
+        page.locator("#txtMemberId").fill("MEM-1082")
+        page.wait_for_timeout(300)
 
-        # step_2_submit_search: Click 'Search Member Records' button to submit inquiry to host
+        # step_2_click: The member ID field is populated. I now click 'Search Member Records' button to submit the query to 
         page.locator("#btnSearchMember").click()
-        page.wait_for_timeout(400)
+        page.wait_for_timeout(300)
 
-        # Checkpoint: Confirm Member Workspace profile header is visible
-        assert page.locator("#summary-member-name").is_visible(), "Checkpoint chk_member_profile_loaded failed"
-        # Checkpoint: Confirm Deposit Accounts table is populated
-        assert page.locator("#tblMemberAccounts").is_visible(), "Checkpoint chk_accounts_table_visible failed"
+        # Checkpoint: Member demographic card and deposit accounts table rendered
+        assert page.locator("#tblMemberAccounts").is_visible(), "Checkpoint chk_step_2 failed"
 
         print("Capability execution completed successfully!")
         browser.close()

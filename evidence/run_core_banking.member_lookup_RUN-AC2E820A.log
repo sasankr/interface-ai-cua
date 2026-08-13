@@ -1,0 +1,11 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.member_lookup
+Run ID:     RUN-AC2E820A
+Status:     SUCCESS
+Duration:   2549.84 ms
+Inputs:     {"member_id": "MEM-1082"}
+Outputs:    {"member_name": "Eleanor Vance", "savings_balance": "$18,940.25"}
+
+--- STEP TIMELINE ---
+[1] step_1_fill - FILL (PLACEHOLDER): SUCCESS (503.9ms)
+[2] step_2_click - CLICK (ARIA_ROLE_NAME): SUCCESS (526.7ms)

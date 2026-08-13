@@ -1,0 +1,17 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.member_lookup.hitl_test
+Run ID:     RUN-3FC4097A
+Status:     SUCCESS
+Duration:   2537.84 ms
+Inputs:     {"member_id": "MEM-1082"}
+Outputs:    {"member_name": "Eleanor Vance", "savings_balance": "$18,940.25"}
+
+--- STEP TIMELINE ---
+[1] step_0_simulated_roadblock - CLICK: RECOVERED_BY_OPERATOR (210.7ms)
+    ERROR: Failed to resolve target element after 1 strategy attempts. Strategy: {'primary_role': None, 'accessible_name': None, 'text_content': None, 'placeholder': None, 'label_text': None, 'css_selector': '#nonexistent-captcha-challenge', 'xpath': None, 'visual_anchor': None, 'frame_selector': None, 'confidence_score': 1.0}
+[2] step_1_fill - FILL (PLACEHOLDER): SUCCESS (472.5ms)
+[3] step_2_click - CLICK (ARIA_ROLE_NAME): SUCCESS (490.4ms)
+
+--- HUMAN INTERVENTIONS ---
+- ID: INT-B035600D | Status: RESUMED | Operator: OPERATOR-JANE-DOE
+  Notes: Verified terminal session security clearance; dismissed roadblock manually.

@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0.0",
   "capability_id": "core_banking.open_subaccount",
-  "name": "Open Core Banking Sub-Account",
-  "description": "Creates a new sub-account ledger under an active CIF profile.",
+  "name": "Core Banking Sub-Account Origination",
+  "description": "Discovered flow for goal: 'open a new sub-account for this member and reach the confirmation screen'",
   "metadata": {
-    "created_at": "2026-08-13T20:40:41Z",
+    "created_at": "2026-08-13T21:16:14Z",
     "discovered_by": "CUA Discovery Agent v1.0",
     "source_goal": "open a new sub-account for this member and reach the confirmation screen",
     "tenant_scope": "GLOBAL_APEXCORE",
@@ -20,41 +20,31 @@
   "entry_point": "http://127.0.0.1:8000/portal/subaccount/open",
   "inputs": [
     {
-      "name": "member_id",
-      "type": "string",
-      "description": "Target CIF member identifier",
-      "required": true,
-      "default": "MEM-1082",
-      "allowed_values": null,
-      "redaction_class": null,
-      "example": null
-    },
-    {
       "name": "account_type",
       "type": "string",
-      "description": "Product category to establish",
-      "required": false,
+      "description": "Input parameter bound to account_type",
+      "required": true,
       "default": "High Yield Savings (APY 4.25%)",
       "allowed_values": null,
       "redaction_class": null,
-      "example": null
+      "example": "High Yield Savings (APY 4.25%)"
     },
     {
       "name": "initial_deposit",
       "type": "string",
-      "description": "Initial deposit funding amount",
-      "required": false,
+      "description": "Input parameter bound to initial_deposit",
+      "required": true,
       "default": "$250.00",
       "allowed_values": null,
       "redaction_class": null,
-      "example": null
+      "example": "$250.00"
     }
   ],
   "outputs": [
     {
       "name": "assigned_account_number",
       "type": "string",
-      "description": "Generated sub-account identifier (e.g. ACT-1082-04)",
+      "description": "Extracted field: assigned_account_number",
       "target_locator": {
         "primary_role": null,
         "accessible_name": null,
@@ -70,12 +60,12 @@
       "extraction_attribute": null,
       "regex_capture": null,
       "required": true,
-      "example": null
+      "example": "ACT-1082-04"
     },
     {
       "name": "confirmation_code",
       "type": "string",
-      "description": "Host authorization confirmation code",
+      "description": "Extracted field: confirmation_code",
       "target_locator": {
         "primary_role": null,
         "accessible_name": null,
@@ -91,7 +81,7 @@
       "extraction_attribute": null,
       "regex_capture": null,
       "required": true,
-      "example": null
+      "example": "CONF-SUB-1082-98124"
     }
   ],
   "safety_policy": {
@@ -120,63 +110,63 @@
   },
   "steps": [
     {
-      "step_id": "step_1_select_product",
-      "description": "Select sub-account product category dropdown",
+      "step_id": "step_1_select_option",
+      "description": "Selecting the sub-account product category dropdown.",
       "action_type": "SELECT_OPTION",
       "target": {
         "primary_role": "combobox",
-        "accessible_name": null,
+        "accessible_name": "Product Category / Type:",
         "text_content": null,
         "placeholder": null,
-        "label_text": "Product Category / Type:",
+        "label_text": null,
         "css_selector": "#selectAccountType",
-        "xpath": null,
+        "xpath": "//select[@id='selectAccountType']",
         "visual_anchor": null,
         "frame_selector": null,
         "confidence_score": 1.0
       },
-      "value": null,
+      "value": "High Yield Savings (APY 4.25%)",
       "param_binding": "account_type",
       "timeout_ms": 5000,
       "risk_level": "SAFE_WRITE",
       "optional": false,
-      "wait_after_ms": 200
+      "wait_after_ms": 300
     },
     {
-      "step_id": "step_2_set_initial_deposit",
-      "description": "Input initial funding amount",
+      "step_id": "step_2_fill",
+      "description": "Entering initial funding deposit amount.",
       "action_type": "FILL",
       "target": {
         "primary_role": "textbox",
-        "accessible_name": null,
+        "accessible_name": "Initial Deposit Amount ($):",
         "text_content": null,
         "placeholder": null,
-        "label_text": "Initial Deposit Amount ($):",
+        "label_text": null,
         "css_selector": "#txtInitialDeposit",
-        "xpath": null,
+        "xpath": "//input[@id='txtInitialDeposit']",
         "visual_anchor": null,
         "frame_selector": null,
         "confidence_score": 1.0
       },
-      "value": null,
+      "value": "$250.00",
       "param_binding": "initial_deposit",
       "timeout_ms": 5000,
       "risk_level": "SAFE_WRITE",
       "optional": false,
-      "wait_after_ms": 200
+      "wait_after_ms": 300
     },
     {
-      "step_id": "step_3_confirm_and_submit",
-      "description": "Submit origination request to core banking host",
+      "step_id": "step_3_click",
+      "description": "Submitting sub-account creation request.",
       "action_type": "CLICK",
       "target": {
         "primary_role": "button",
         "accessible_name": "Create Sub-Account & Issue Core ID",
-        "text_content": "Create Sub-Account & Issue Core ID",
+        "text_content": null,
         "placeholder": null,
         "label_text": null,
         "css_selector": "#btnSubmitSubAccount",
-        "xpath": null,
+        "xpath": "//button[@id='btnSubmitSubAccount']",
         "visual_anchor": null,
         "frame_selector": null,
         "confidence_score": 1.0
@@ -184,23 +174,23 @@
       "value": null,
       "param_binding": null,
       "timeout_ms": 5000,
-      "risk_level": "IRREVERSIBLE",
+      "risk_level": "SAFE_READ",
       "optional": false,
-      "wait_after_ms": 500
+      "wait_after_ms": 300
     }
   ],
   "checkpoints": [
     {
-      "checkpoint_id": "chk_subaccount_confirmation_banner",
-      "description": "Confirm success confirmation panel is displayed",
+      "checkpoint_id": "chk_step_3",
+      "description": "Core Banking confirmation panel displayed",
       "target": {
         "primary_role": null,
         "accessible_name": null,
-        "text_content": "Core Banking Sub-Account Successfully Created",
+        "text_content": null,
         "placeholder": null,
         "label_text": null,
         "css_selector": "#subaccount-confirmation-panel",
-        "xpath": null,
+        "xpath": "//div[@id='subaccount-confirmation-panel']",
         "visual_anchor": null,
         "frame_selector": null,
         "confidence_score": 1.0
@@ -212,12 +202,12 @@
   ],
   "business_outcomes": [
     {
-      "outcome_code": "VALIDATION_MIN_DEPOSIT",
-      "description": "Initial deposit amount below minimum required by policy ($25.00)",
+      "outcome_code": "MEMBER_NOT_FOUND",
+      "description": "Core banking host returned Record Not Found",
       "trigger_locator": {
         "primary_role": null,
         "accessible_name": null,
-        "text_content": "[ERROR CODE: VALIDATION_MIN_DEPOSIT]",
+        "text_content": "[ERROR CODE: MEMBER_NOT_FOUND]",
         "placeholder": null,
         "label_text": null,
         "css_selector": "#error-code-badge",
@@ -227,7 +217,7 @@
         "confidence_score": 1.0
       },
       "trigger_condition": "VISIBLE",
-      "expected_text_pattern": null,
+      "expected_text_pattern": "MEMBER_NOT_FOUND",
       "extract_message": true
     }
   ],

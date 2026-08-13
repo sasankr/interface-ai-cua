@@ -1,0 +1,61 @@
+{
+  "capability_id": "core_banking.member_lookup",
+  "run_id": "RUN-AC2E820A",
+  "status": "SUCCESS",
+  "inputs_applied": {
+    "member_id": "MEM-1082"
+  },
+  "outputs_extracted": {
+    "member_name": "Eleanor Vance",
+    "savings_balance": "$18,940.25"
+  },
+  "business_outcome_code": null,
+  "business_outcome_message": null,
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 2549.84450340271,
+  "step_records": [
+    {
+      "step_id": "step_1_fill",
+      "description": "I observe the Member Search inquiry page. To look up member 1082, I must enter the identifier 'MEM-1",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "MEM-1082",
+      "locator_details": {
+        "strategy_used": "PLACEHOLDER",
+        "selector_string": "placeholder='e.g. MEM-1082'",
+        "resolved_in_ms": 25.996923446655273,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 503.85308265686035,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-AC2E820A_step_1_fill.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_click",
+      "description": "The member ID field is populated. I now click 'Search Member Records' button to submit the query to ",
+      "action_type": "CLICK",
+      "status": "SUCCESS",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Search Member Records']",
+        "resolved_in_ms": 14.510154724121094,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 526.686429977417,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-AC2E820A_step_2_click.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-AC2E820A_step_1_fill.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-AC2E820A_step_2_click.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": []
+}

@@ -53,7 +53,7 @@ def test_discovery_and_replay_happy_path(tmp_path):
     replay = ReplayEngine(headless=True, evidence_dir=evidence_dir)
     res = replay.execute(artifact, inputs={"member_id": "MEM-1082"})
 
-    assert res.status == ExecutionStatus.SUCCESS
+    assert res.status == ExecutionStatus.SUCCESS, f"Replay failed with error: {res.error_code} - {res.error_message} (Failed step: {res.failed_step_id})"
     assert res.outputs_extracted.get("savings_balance") == "$18,940.25"
     assert res.outputs_extracted.get("member_name") == "Eleanor Vance"
 

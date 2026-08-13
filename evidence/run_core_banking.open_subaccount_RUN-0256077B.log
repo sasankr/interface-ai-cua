@@ -1,0 +1,13 @@
+=== CUA RUN EXECUTION EVIDENCE ===
+Capability: core_banking.open_subaccount
+Run ID:     RUN-0256077B
+Status:     HARD_FAILURE
+Duration:   2728.38 ms
+Inputs:     {"account_type": "High Yield Savings (APY 4.25%)", "initial_deposit": "$300.00"}
+Outputs:    {}
+Error:      [CHECKPOINT_ASSERTION_FAILED] Critical checkpoint 'chk_member_profile_loaded' (Confirm member profile loaded) was not satisfied. (Step: chk_member_profile_loaded)
+
+--- STEP TIMELINE ---
+[1] step_1_select_option - SELECT_OPTION (CSS_SELECTOR): SUCCESS (461.5ms)
+[2] step_2_fill - FILL (CSS_SELECTOR): SUCCESS (438.1ms)
+[3] step_3_click - CLICK (ARIA_ROLE_NAME): SUCCESS (538.7ms)

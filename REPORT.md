@@ -9,7 +9,7 @@
 ### System Purpose & Core Paradigm
 In US banking and credit union operations, core banking systems (e.g., FIS, Fiserv, Jack Henry) and internal servicing consoles lack public or unified APIs. These applications are characterized by stable, slowly changing UIs, but frequent and legitimate runtime business errors (*record not found*, *AML/compliance holds*, *interstitial security banners*, *timeout modals*).
 
-Our architecture is strictly anchored on a two-phase decoupled model:
+Our architecture is anchored on a two-phase decoupled model:
 1. **Phase 1: Discovery (LLM in the Loop)**: An agent navigates a live surface using an Observe $\rightarrow$ Decide $\rightarrow$ Act loop to achieve a natural language goal. It inspects the Accessibility Object Model (AOM), form controls, visual anchors, and layout geometry. It parameterizes concrete inputs and outputs, identifies checkpoints and error signatures, and compiles a typed **Capability Artifact**.
 2. **Phase 2: Replay Engine (Zero LLM Tokens)**: Production execution relies exclusively on deterministic replay. When an upstream AI agent or service triggers a capability, the replay engine executes the recorded flow without re-invoking the model.
 
@@ -52,8 +52,8 @@ Our architecture is strictly anchored on a two-phase decoupled model:
 
 | Architectural Decision | Choice Made | Rationale & Trade-Offs |
 | :--- | :--- | :--- |
-| **Execution Decoupling** | Pure separation between Discovery and Replay | Calling an LLM on every production step is slow ($>3$s/step), non-deterministic, and expensive. Recording a typed artifact once allows $<300$ms per-step deterministic replays with auditability. |
-| **Locator Strategy** | Multi-strategy prioritized tuples (*AOM $\rightarrow$ Label $\rightarrow$ Placeholder $\rightarrow$ Text $\rightarrow$ CSS $\rightarrow$ XPath $\rightarrow$ Visual Anchor*) | Legacy banking UIs rarely have `data-testid`. Relying solely on raw CSS/XPath is brittle to DOM nesting changes; relying solely on vision is slow. Multi-tier accessibility + visual anchoring provides resilience against table nesting while running at native speeds. |
+| **Execution Decoupling** | Pure separation between Discovery and Replay | Calling an LLM on every production step introduces latency variance, non-determinism, and unnecessary token costs. Recording a typed artifact once enables sub-second deterministic replays with full auditability. |
+| **Locator Strategy** | Multi-strategy prioritized tuples (*AOM $\rightarrow$ Label $\rightarrow$ Placeholder $\rightarrow$ Text $\rightarrow$ CSS $\rightarrow$ XPath $\rightarrow$ Visual Anchor*) | Legacy banking UIs rarely have `data-testid`. Relying solely on raw CSS/XPath is brittle to DOM nesting changes; relying solely on vision is computationally heavy. Multi-tier accessibility + visual anchoring provides resilience against table nesting while running at native speeds. |
 | **Target Application** | Embedded realistic legacy core banking web portal (*ApexCore v4.8.2*) | Built-in non-semantic table layouts, frames, security interstitials, and explicit business outcome states (`MEM-9999`, `MEM-LOCKED`). Provides 100% reproducible, zero-external-dependency evaluation. |
 | **Process Model** | In-process Playwright browser context with async event-driven orchestration | Avoids heavyweight distributed queues for local predictability while cleanly exposing seams for remote worker pools. |
 
@@ -204,7 +204,7 @@ To scale beyond modern web browsers to legacy framesets, terminal emulators (TN3
 +-----------------------------------------+-----------------------------------------+
                                           |
                    +----------------------+----------------------+
-                   |                                             |
+                    |                                             |
                    v                                             v
     [ Web Surface Driver ]                         [ Desktop / OS Surface Driver ]
     (Playwright / CDP / AOM)                       (Windows UI Automation / pywinauto)
@@ -281,7 +281,7 @@ All human interventions are recorded directly in the execution evidence audit tr
 ## 6. Safety
 
 ### Guardrail Model
-Financial automation requires stringent defense-in-depth:
+Financial automation requires defense-in-depth:
 
 ```
 +-----------------------------------------------------------------------------------+
@@ -343,11 +343,11 @@ All end-to-end capabilities have been verified and documented in `/evidence/`:
 
 | Artifact / Log File | Evidence Description | Validation Outcome |
 | :--- | :--- | :--- |
-| [`capability_member_lookup.json`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/capability_member_lookup.json) | Discovered Member Lookup Capability Artifact | Typed JSON schema with inputs, outputs, locators |
-| [`capability_open_subaccount.json`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/capability_open_subaccount.json) | Discovered Sub-Account Origination Artifact | Multi-step mutation flow with checkpoints |
-| [`discovery_run.log`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/discovery_run.log) | Discovery Agent Observe-Decide-Act Trace | Complete live UI interaction trace |
-| [`run_core_banking.member_lookup_RUN-31FCB450.log`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/run_core_banking.member_lookup_RUN-31FCB450.log) | Deterministic Replay: Happy Path (`MEM-1082`) | Succeeded in 2752ms; extracted balances |
-| [`run_core_banking.member_lookup_RUN-2882C84A.log`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/run_core_banking.member_lookup_RUN-2882C84A.log) | Deterministic Replay: Not Found (`MEM-9999`) | Detected `MEMBER_NOT_FOUND` business outcome |
-| [`run_core_banking.member_lookup.hitl_test_RUN-D2982CD3.log`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/run_core_banking.member_lookup.hitl_test_RUN-D2982CD3.log) | HITL Live Session Escalation & Resume Trace | Paused live session, logged human handoff, resumed |
-| [`standalone_member_lookup.py`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/standalone_member_lookup.py) | Code Generation Stretch Goal | Compiled standalone runnable Playwright script |
-| [`evidence/screenshots/`](file:///C:/Users/sasan/.gemini/antigravity/scratch/cua_system/evidence/screenshots/) | Step & Outcome Screenshots | Visual evidence across discovery and replay runs |
+| [`capability_member_lookup.json`](evidence/capability_member_lookup.json) | Discovered Member Lookup Capability Artifact | Typed JSON schema with inputs, outputs, locators |
+| [`capability_open_subaccount.json`](evidence/capability_open_subaccount.json) | Discovered Sub-Account Origination Artifact | Multi-step mutation flow with checkpoints |
+| [`discovery_run.log`](evidence/discovery_run.log) | Discovery Agent Observe-Decide-Act Trace | Complete live UI interaction trace |
+| [`run_core_banking.member_lookup_RUN-31FCB450.log`](evidence/run_core_banking.member_lookup_RUN-31FCB450.log) | Deterministic Replay: Happy Path (`MEM-1082`) | Succeeded cleanly; extracted balances |
+| [`run_core_banking.member_lookup_RUN-2882C84A.log`](evidence/run_core_banking.member_lookup_RUN-2882C84A.log) | Deterministic Replay: Not Found (`MEM-9999`) | Detected `MEMBER_NOT_FOUND` business outcome |
+| [`run_core_banking.member_lookup.hitl_test_RUN-D2982CD3.log`](evidence/run_core_banking.member_lookup.hitl_test_RUN-D2982CD3.log) | HITL Live Session Escalation & Resume Trace | Paused live session, logged human handoff, resumed |
+| [`standalone_member_lookup.py`](evidence/standalone_member_lookup.py) | Code Generation Stretch Goal | Compiled standalone runnable Playwright script |
+| [`evidence/screenshots/`](evidence/screenshots/) | Step & Outcome Screenshots | Visual evidence across discovery and replay runs |

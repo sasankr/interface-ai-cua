@@ -1,0 +1,78 @@
+{
+  "capability_id": "core_banking.open_subaccount",
+  "run_id": "RUN-0256077B",
+  "status": "HARD_FAILURE",
+  "inputs_applied": {
+    "account_type": "High Yield Savings (APY 4.25%)",
+    "initial_deposit": "$300.00"
+  },
+  "outputs_extracted": {},
+  "business_outcome_code": null,
+  "business_outcome_message": null,
+  "error_code": "CHECKPOINT_ASSERTION_FAILED",
+  "error_message": "Critical checkpoint 'chk_member_profile_loaded' (Confirm member profile loaded) was not satisfied.",
+  "failed_step_id": "chk_member_profile_loaded",
+  "observed_dom_snippet": "<!DOCTYPE html><html lang=\"en\"><head>\n    <meta charset=\"UTF-8\">\n    <title>ApexCore Banking System - Sub-Account Origination</title>\n    <style>\n        body { font-family: \"Lucida Console\", \"Courier New\", monospace, Tahoma, sans-serif; margin: 0; background-color: #d4d0c8; color: #000; font-size: 12px; }\n        .header { background: linear-gradient(to right, #000080, #1084d0); color: white; padding: 4px 8px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #808080; }\n        .toolbar { background: #ece9d8; border-bottom: 1px solid #999; padding: 4px 8px; display: flex; gap: 8px; }\n        .btn-win { background: #ece9d8; border: 2px outset #ffffff; padding: 4px 12px; cursor: pointer; font-size: 11px; font-family: Tahoma, sans-serif; }\n        .btn-win:active { border-style: inset; }\n        .btn-primary { background: #000080; color: white; border: 2px outset #000080; font-weight: bold; }\n        .btn-success { background: #008000; color: white; border: 2px outset #008000; font-weight: bold; }\n        .main-container { display: flex; height: calc(100vh - 55px); }\n        .sidebar { width: 220px; background: #dfdfdf; border-right: 2px solid #808080; padding: 6px; }\n        .sidebar-title { font-weight: bold; background: #000080; color: #fff; padding: 2px 4px; margin-bottom: 4px; font-size: 11px; }\n        .nav-tree { list-style: none; padding-left: 10px; margin: 0; }\n        .nav-tree li { margin: 6px 0; }\n       ",
+  "total_duration_ms": 2728.3828258514404,
+  "step_records": [
+    {
+      "step_id": "step_1_select_option",
+      "description": "Selecting the sub-account product category dropdown.",
+      "action_type": "SELECT_OPTION",
+      "status": "SUCCESS",
+      "resolved_value": "High Yield Savings (APY 4.25%)",
+      "locator_details": {
+        "strategy_used": "CSS_SELECTOR",
+        "selector_string": "#selectAccountType",
+        "resolved_in_ms": 19.998788833618164,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 461.4849090576172,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_step_1_select_option.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_fill",
+      "description": "Entering initial funding deposit amount.",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "$300.00",
+      "locator_details": {
+        "strategy_used": "CSS_SELECTOR",
+        "selector_string": "#txtInitialDeposit",
+        "resolved_in_ms": 15.999317169189453,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 438.14682960510254,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_step_2_fill.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_3_click",
+      "description": "Submitting sub-account creation request.",
+      "action_type": "CLICK",
+      "status": "SUCCESS",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Create Sub-Account & Issue Core ID']",
+        "resolved_in_ms": 23.520469665527344,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 538.6860370635986,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_step_3_click.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_step_1_select_option.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_step_2_fill.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_step_3_click.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-0256077B_checkpoint_chk_member_profile_loaded_fail.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": []
+}

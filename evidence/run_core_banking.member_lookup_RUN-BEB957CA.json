@@ -1,0 +1,58 @@
+{
+  "capability_id": "core_banking.member_lookup",
+  "run_id": "RUN-BEB957CA",
+  "status": "BUSINESS_OUTCOME",
+  "inputs_applied": {
+    "member_id": "MEM-9999"
+  },
+  "outputs_extracted": {},
+  "business_outcome_code": "MEMBER_NOT_FOUND",
+  "business_outcome_message": "No active member matching identifier 'MEM-9999' was located in CIF master partition.",
+  "error_code": null,
+  "error_message": null,
+  "failed_step_id": null,
+  "observed_dom_snippet": null,
+  "total_duration_ms": 2840.989351272583,
+  "step_records": [
+    {
+      "step_id": "step_1_fill",
+      "description": "I observe the Member Search inquiry page. To look up member 1082, I must enter the identifier 'MEM-1",
+      "action_type": "FILL",
+      "status": "SUCCESS",
+      "resolved_value": "MEM-9999",
+      "locator_details": {
+        "strategy_used": "PLACEHOLDER",
+        "selector_string": "placeholder='e.g. MEM-1082'",
+        "resolved_in_ms": 34.99484062194824,
+        "fallback_attempts": 2
+      },
+      "duration_ms": 631.5920352935791,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-BEB957CA_step_1_fill.png",
+      "error_message": null,
+      "human_assisted": false
+    },
+    {
+      "step_id": "step_2_click",
+      "description": "The member ID field is populated. I now click 'Search Member Records' button to submit the query to ",
+      "action_type": "CLICK",
+      "status": "BUSINESS_OUTCOME_TRIGGERED",
+      "resolved_value": null,
+      "locator_details": {
+        "strategy_used": "ARIA_ROLE_NAME",
+        "selector_string": "role=button[name='Search Member Records']",
+        "resolved_in_ms": 24.00970458984375,
+        "fallback_attempts": 1
+      },
+      "duration_ms": 745.410680770874,
+      "screenshot_path": "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-BEB957CA_outcome_MEMBER_NOT_FOUND.png",
+      "error_message": null,
+      "human_assisted": false
+    }
+  ],
+  "screenshot_paths": [
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-BEB957CA_step_1_fill.png",
+    "C:\\Users\\sasan\\.gemini\\antigravity\\scratch\\cua_system\\evidence\\screenshots\\RUN-BEB957CA_outcome_MEMBER_NOT_FOUND.png"
+  ],
+  "evidence_bundle_path": null,
+  "human_interventions": []
+}
